@@ -1,0 +1,17 @@
+title: OAuth2Token
+type: object
+x-examples: {}
+description: An OAuth2Token that authenticates subsequent requests to all other services within the Astra Connectivity backend.
+properties:
+  token:
+    type: string
+    description: The token itself.
+  token_type:
+    type: string
+    example: Bearer
+    description: 'Token type (Bearer, MAC). At the moment, only Bearer is supported.'
+  ttl:
+    type: integer
+    format: int32
+    minimum: 0
+    description: Point in time at which this token will stop being valid.

@@ -2,14 +2,33 @@ openapi: 3.0.0
 info:
   title: Auth
   version: '1.0'
-  description: ''
+  description: API that provides authentication to all applying clients.
+  contact:
+    name: Phil Vella
+    email: phil@gps-telematics.co.uk
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'https://connectivity.gps-telematics.co.uk:3000/auth'
+    description: Backend
 paths:
   /token:
     post:
       summary: Obtain authentication token
       tags: []
       responses: {}
+      description: This endpoint provides an OAuth2 token to use for authentication of subsequent requests to this backend.
+      security:
+        - Basic Access Authentication: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+    parameters: []
 components:
   schemas: {}
+  securitySchemes:
+    Basic Access Authentication:
+      type: http
+      scheme: Basic
+      description: 'Provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front.'
