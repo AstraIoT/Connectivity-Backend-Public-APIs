@@ -1,0 +1,15 @@
+openapi: 3.0.0
+info:
+  title: Auth
+  version: '1.0'
+  description: ''
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /token:
+    post:
+      summary: Obtain authentication token
+      tags: []
+      responses: {}
+components:
+  schemas: {}
