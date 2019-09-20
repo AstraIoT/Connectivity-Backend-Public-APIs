@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: Devices
+  version: '1.0'
+servers:
+  - url: 'https://connectivity.gps-telematics.co.uk:3000/devices'
+    description: Backend
+paths:
+  '/{deviceId}':
+    parameters:
+      - type: string
+        name: deviceId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      security:
+        - ClientPassword: []
+      parameters: []
+components:
+  schemas: {}
+  securitySchemes:
+    ClientPassword:
+      type: http
+      scheme: Bearer
+      description: Use the authentication bearer token obtained from the `/auth/token` endpoint
