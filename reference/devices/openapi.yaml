@@ -14,7 +14,8 @@ paths:
         required: true
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - devices
       responses: {}
       security:
         - ClientPassword: []

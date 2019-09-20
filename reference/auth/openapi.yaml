@@ -13,7 +13,9 @@ paths:
   /token:
     post:
       summary: Obtain authentication token
-      tags: []
+      tags:
+        - auth
+        - token
       responses:
         '200':
           description: OK

@@ -18,3 +18,7 @@ required:
   - token
   - token_type
   - ttl
+x-tags:
+  - models
+  - auth
+  - token
