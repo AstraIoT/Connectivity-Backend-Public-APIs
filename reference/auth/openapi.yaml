@@ -14,16 +14,20 @@ paths:
     post:
       summary: Obtain authentication token
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/oauth2token.v1.yaml
+        '401':
+          description: Wrong ClientId or ApiKey.
+          headers: {}
       description: This endpoint provides an OAuth2 token to use for authentication of subsequent requests to this backend.
       security:
         - Basic Access Authentication: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: {}
+      requestBody: {}
     parameters: []
 components:
   schemas: {}
