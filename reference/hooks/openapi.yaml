@@ -1,0 +1,165 @@
+openapi: 3.0.0
+info:
+  title: Hooks
+  version: '1.0'
+  description: >-
+    The hooks API can be used to subscribe to relevant events that a device might
+    trigger in its usage.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    Unless otherwise specified, all hooks will POST to the URL that you provide.
+servers:
+  - url: 'https://connectivity.gps-telematics.co.uk:3000/hooks'
+    description: Hooks API
+paths:
+  /reports:
+    post:
+      summary: "Subscribe to a device's reports"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/hookurl.v1.yaml
+      description: |-
+        Subscribe to your device's reports and get their status in real-time.
+
+        Each time that the hook s triggered, you will be POSTed a JSON object with the following schema:
+      security:
+        - Client password: []
+    parameters: []
+components:
+  schemas: {}
+  securitySchemes:
+    Client password:
+      type: http
+      scheme: Bearer
+      description: Use the authentication bearer token obtained from the `/auth/token` endpoint

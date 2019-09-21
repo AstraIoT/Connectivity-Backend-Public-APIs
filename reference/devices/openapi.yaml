@@ -2,9 +2,10 @@ openapi: 3.0.0
 info:
   title: Devices
   version: '1.0'
+  description: The devices API can be used to poll the status of devices and control them.
 servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/devices'
-    description: Backend
+    description: Devices API
 paths:
   '/{deviceId}':
     parameters:

@@ -1,0 +1,10 @@
+title: HookUrl
+type: object
+properties:
+  url:
+    type: string
+    format: hostname
+    description: The URL of your client controller that you want this hook to POST to.
+required:
+  - url
+description: ''
