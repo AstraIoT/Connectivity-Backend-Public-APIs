@@ -2,139 +2,7 @@ openapi: 3.0.0
 info:
   title: Hooks
   version: '1.0'
-  description: >-
-    The hooks API can be used to subscribe to relevant events that a device might
-    trigger in its usage.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    Unless otherwise specified, all hooks will POST to the URL that you provide.
+  description: 'The hooks API can be used to subscribe to relevant events that a device might trigger in its usage. Unless otherwise specified, all hooks will POST to the URL that you provide.'
 servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/hooks'
     description: Hooks API
@@ -145,16 +13,34 @@ paths:
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: ./models/hookurl.v1.yaml
-      description: |-
-        Subscribe to your device's reports and get their status in real-time.
+      description: >-
+        Subscribe to your device's reports and get their status in real-time. The
+        system will POST you at the URL you provide every time that a new report
+        arrives from one of your devices.
 
-        Each time that the hook s triggered, you will be POSTed a JSON object with the following schema:
+
+
+        Please take notice that a callback is defined for this hook in this same
+        `.yml` file, even though you are not able to see it in the browser.
+        Please inspect the OpenAPI definition files manually to obtain
+        information about the schema used for notifying your applications.
       security:
         - Client password: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./models/hookurl.v1.yaml
+        description: ''
+      callbacks:
+        DeviceReportReceivedEvent:
+          '{$request.body#/url}':
+            post:
+              requestBody:
+                $ref: ./models/events/devicereportreceived.v1.yaml
+              responses:
+                '200':
+                  description: OK
     parameters: []
 components:
   schemas: {}
