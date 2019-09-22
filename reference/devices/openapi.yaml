@@ -14,13 +14,75 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: "Obtain the last known device's state"
       tags:
         - devices
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: ../common/models/protocolxdevicereport.v1.yaml
+                  - $ref: ../common/models/protocolkdevicereport.v1.yaml
+                  - $ref: ../common/models/protocolmdevicereport.v1.yaml
+        '204':
+          description: The device has not sent any data yet.
+        '404':
+          description: You got the device ID wrong.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
       security:
         - ClientPassword: []
       parameters: []
+      description: >-
+        Returns the last known state of the device to the Astra Connectivity
+        middleware. Note that this state might not represent reality at the
+        moment of this query.
+
+
+
+        The state is sent back to the caller using the latest report received.
+  '/{deviceId}/command':
+    parameters:
+      - type: string
+        name: deviceId
+        in: path
+        required: true
+    post:
+      summary: Send a command to a device
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./models/commandresponse.v1.yaml
+        '408':
+          description: 'Request timeout, probably because the Astra device was unavailable at the time.'
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+              examples: {}
+      description: 'Send a command to a device. This operation is synchronous: the HTTP call will return when the command is received, processed and a response has been sent back to the server, at which time the server will send the response.'
+      security:
+        - ClientPassword: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              description: An array of commands (each a string). The Astra device will execute them sequentially and be back with a response for each of them.
+              items:
+                $ref: ./models/command.v1.yaml
+        description: An array of commands.
 components:
   schemas: {}
   securitySchemes:

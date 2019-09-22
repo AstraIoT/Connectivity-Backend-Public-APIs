@@ -1,0 +1,13 @@
+title: CommandResponse
+type: object
+description: ''
+properties:
+  command:
+    type: string
+    description: The original command that triggered this response.
+  device_response:
+    type: string
+    description: The response that the Astra device has had for the previous command.
+required:
+  - command
+  - device_response

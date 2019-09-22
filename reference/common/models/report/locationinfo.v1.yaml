@@ -1,0 +1,29 @@
+title: LocationInfo
+type: object
+properties:
+  latitude:
+    type: number
+    format: float
+  longitude:
+    type: number
+    format: float
+  timestamp:
+    type: string
+    format: date-time
+  speed:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 512
+    multipleOf: 2
+  heading:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 360
+    multipleOf: 2
+  altitude:
+    type: integer
+    minimum: 0
+    maximum: 5100
+    multipleOf: 20

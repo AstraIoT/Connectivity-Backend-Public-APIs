@@ -1,4 +1,4 @@
-title: DeviceReportReceived
+title: ProtocolKDeviceReport
 type: object
 properties:
   id:

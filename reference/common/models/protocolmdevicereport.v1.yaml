@@ -1,0 +1,5 @@
+title: ProtocolMDeviceReport
+type: object
+properties:
+  id:
+    type: string

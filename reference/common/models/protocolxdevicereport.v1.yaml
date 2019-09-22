@@ -1,0 +1,6 @@
+title: ProtocolXDeviceReport
+type: object
+description: Report generated from a device using the protocol X specification.
+properties:
+  basicData:
+    type: string
