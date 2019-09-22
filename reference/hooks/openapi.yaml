@@ -20,10 +20,16 @@ paths:
 
 
 
+
+
+
+
+
+
         Please take notice that a callback is defined for this hook in this same
         `.yml` file, even though you are not able to see it in the browser.
-        Please inspect the OpenAPI definition files manually to obtain
-        information about the schema used for notifying your applications.
+        Please inspect the raw OpenAPI definition files to obtain information
+        about the schema used for notifying your applications.
       security:
         - Client password: []
       requestBody:
@@ -42,6 +48,13 @@ paths:
                 '200':
                   description: OK
     parameters: []
+  /events:
+    post:
+      summary: Subscribe to important device events
+      responses:
+        '200':
+          description: OK
+      description: 'Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the raw OpenAPI definition files to obtain information about the schema used for notifying your applications.'
 components:
   schemas: {}
   securitySchemes:
