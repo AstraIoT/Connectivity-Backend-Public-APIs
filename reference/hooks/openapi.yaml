@@ -26,6 +26,126 @@ paths:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         Please take notice that a callback is defined for this hook in this same
         `.yml` file, even though you are not able to see it in the browser.
         Please inspect the raw OpenAPI definition files to obtain information
@@ -54,7 +174,23 @@ paths:
       responses:
         '200':
           description: OK
-      description: 'Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the raw OpenAPI definition files to obtain information about the schema used for notifying your applications.'
+      description: >-
+        Subscribe a URL to receive a POST on any important events of your
+        devices. You can define which type of event to subscribe to.
+
+
+
+        Please take notice that a callback is defined for this hook in this same
+        `.yml` file, even though you are not able to see it in the browser.
+        Please inspect the raw OpenAPI definition files to obtain information
+        about the schema used for notifying your applications.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./models/eventhook.v1.yaml
+      security:
+        - Client password: []
 components:
   schemas: {}
   securitySchemes:

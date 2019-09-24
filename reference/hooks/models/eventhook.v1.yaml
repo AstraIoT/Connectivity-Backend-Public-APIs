@@ -1,0 +1,35 @@
+title: EventHook
+type: object
+properties:
+  event_type:
+    type: string
+    enum:
+      - timed interval elapsed
+      - distance travelled exceeded
+      - position on demand
+      - geofence event
+      - panic switch activated
+      - external io event
+      - journey start
+      - journey stop
+      - heading change
+      - low battery
+      - external power event
+      - idling start event
+      - idling end event
+      - idling ongoing
+      - power on event
+      - speed overthreshold
+      - towing alarm
+      - unauthorised driver alarm
+      - collision alarm
+      - accel threshold maximum event
+      - cornering threshold maximum event
+      - decel threshold maximum event
+      - gps reacquired
+      - vehicle roll event
+  url:
+    type: string
+required:
+  - event_type
+  - url
