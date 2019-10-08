@@ -28,9 +28,9 @@ paths:
                   - $ref: ../common/models/protocolkdevicereport.v1.yaml
                   - $ref: ../common/models/protocolmdevicereport.v1.yaml
         '204':
-          description: The device has not sent any data yet.
+          description: The device has not connected nor sent any data to the backend yet.
         '404':
-          description: You got the device ID wrong.
+          description: Could not find a device by the provided ID.
           content:
             application/json:
               schema:
@@ -38,14 +38,7 @@ paths:
       security:
         - ClientPassword: []
       parameters: []
-      description: >-
-        Returns the last known state of the device to the Astra Connectivity
-        middleware. Note that this state might not represent reality at the
-        moment of this query.
-
-
-
-        The state is sent back to the caller using the latest report received.
+      description: Returns the last known state of the device to the Astra Connectivity middleware. Note that this state might not represent reality at the moment of this query. The state is sent back to the caller using the latest report received.
   '/{deviceId}/command':
     parameters:
       - type: string
@@ -71,7 +64,7 @@ paths:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
               examples: {}
-      description: 'Send a command to a device. This operation is synchronous: the HTTP call will return when the command is received, processed and a response has been sent back to the server, at which time the server will send the response.'
+      description: 'Send a command to a device. This operation is synchronous: the HTTP call will return when the command is received, processed and a response has been sent back to the server, at which time the server will send the response back to the calling client.'
       security:
         - ClientPassword: []
       requestBody:
@@ -79,10 +72,38 @@ paths:
           application/json:
             schema:
               type: array
-              description: An array of commands (each a string). The Astra device will execute them sequentially and be back with a response for each of them.
+              description: An array of commands (each a string). The Astra device will execute them sequentially (starting at index 0) and be back with a response for each of them.
               items:
                 $ref: ./models/command.v1.yaml
         description: An array of commands.
+  /all:
+    get:
+      summary: Get all your devices
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/paginateddevicesresponse.v1.yaml
+      description: 'Obtain a list of all the devices that you currently posses, as well as their last seen online timestamps.'
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: offset
+          description: 'The device ID provided in the previous response. If none is given, it will start looking from the beggining of the list.'
+        - schema:
+            type: integer
+            maxLength: 0
+            maximum: 50
+            minimum: 1
+            multipleOf: 0
+            default: '20'
+          in: query
+          name: limit
+          description: 'Limit the response size (in device no.). Must be a value between 1 and 50, and default is 20.'
 components:
   schemas: {}
   securitySchemes:

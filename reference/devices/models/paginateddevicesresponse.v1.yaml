@@ -1,0 +1,17 @@
+title: PaginatedDevicesResponse
+type: object
+properties:
+  devices:
+    type: array
+    items:
+      $ref: ./deviceresponse.v1.yaml
+  next:
+    type:
+      - string
+      - 'null'
+    description: 'A reference to the next device in the list. Treat this field as the device ID (UUID). In the case that there are no more devices left, the value will be null.'
+required:
+  - devices
+  - next
+x-examples: {}
+description: Paginated response of multiple devices.

@@ -1,0 +1,19 @@
+title: DeviceResponse
+type: object
+properties:
+  device_id:
+    type: string
+    format: uuid
+  imei:
+    type: string
+  firmware_version:
+    type: string
+  last_seen:
+    type: string
+    format: date-time
+required:
+  - device_id
+  - imei
+  - firmware_version
+  - last_seen
+description: Response model of a device registered in the system.
