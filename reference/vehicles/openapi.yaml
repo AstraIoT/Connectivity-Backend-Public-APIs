@@ -23,7 +23,8 @@ paths:
         required: true
     get:
       summary: "Obtain vehicle's last known information"
-      tags: []
+      tags:
+        - vehicles
       responses:
         '200':
           description: OK
@@ -45,7 +46,7 @@ paths:
       parameters: []
   '/{deviceId}/start':
     post:
-      summary: ''
+      summary: Start a vehicle
       responses:
         '200':
           description: Vehicle performed the requested command successfully.
@@ -66,6 +67,9 @@ paths:
       security:
         - Client password: []
       requestBody: {}
+      tags:
+        - commands
+        - vehicles
     parameters:
       - schema:
           type: string
@@ -74,14 +78,8 @@ paths:
         required: true
         description: A UUID that represents a device.
   '/{deviceId}/stop':
-    parameters:
-      - type: string
-        name: deviceId
-        in: path
-        required: true
-        description: A UUID that represents a device.
     post:
-      summary: ''
+      summary: Stop a vehicle
       responses:
         '200':
           description: Vehicle performed the requested command successfully.
@@ -101,15 +99,28 @@ paths:
       security:
         - Client password: []
       requestBody: {}
-  '/{deviceId}/gps':
+      tags:
+        - commands
+        - vehicles
     parameters:
       - type: string
         name: deviceId
         in: path
         required: true
+        description: A UUID that represents a device.
+        schema:
+          type: string
+  '/{deviceId}/gps':
+    parameters:
+      - type: string
+        name: deviceId
+        in: path
+        description: A UUID that represents a device.
+        schema:
+          type: string
+        required: true
     get:
-      summary: Your GET endpoint
-      tags: []
+      summary: "Poll a vehicle's GPS position"
       responses:
         '200':
           description: OK
@@ -121,6 +132,9 @@ paths:
       security:
         - Client password: []
       requestBody: {}
+      tags:
+        - commands
+        - vehicles
 components:
   schemas: {}
   securitySchemes:
