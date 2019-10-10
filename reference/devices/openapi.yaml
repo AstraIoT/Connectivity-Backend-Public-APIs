@@ -17,7 +17,7 @@ paths:
         description: A UUID that represents a device.
         required: true
     get:
-      summary: "Obtain the last known device's state"
+      summary: "Obtain the device's last known state"
       tags:
         - devices
       responses:

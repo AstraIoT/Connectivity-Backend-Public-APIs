@@ -13,9 +13,6 @@ paths:
   /token:
     post:
       summary: Obtain authentication token
-      tags:
-        - auth
-        - token
       responses:
         '200':
           description: OK
@@ -31,6 +28,8 @@ paths:
         - Basic Access Authentication: []
       requestBody: {}
       operationId: getAuthToken
+      tags:
+        - auth
     parameters: []
 components:
   schemas: {}

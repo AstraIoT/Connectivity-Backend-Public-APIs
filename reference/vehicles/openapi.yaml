@@ -102,6 +102,7 @@ paths:
       tags:
         - commands
         - vehicles
+      operationId: stopVehicle
     parameters:
       - type: string
         name: deviceId
@@ -135,6 +136,7 @@ paths:
       tags:
         - commands
         - vehicles
+      operationId: pollVehicleGps
 components:
   schemas: {}
   securitySchemes:
