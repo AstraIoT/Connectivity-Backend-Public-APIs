@@ -30,6 +30,7 @@ paths:
       security:
         - Basic Access Authentication: []
       requestBody: {}
+      operationId: getAuthToken
     parameters: []
 components:
   schemas: {}

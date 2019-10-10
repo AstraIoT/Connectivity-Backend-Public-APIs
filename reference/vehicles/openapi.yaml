@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: Vehicles
+  version: '1.0'
+  description: |-
+    The vehicles API is a simplified down version of the devices API. This API assumes your devices are all connected to vehicles and supporting the main automotion capabilities of the ASTRA (start/stop, immobiliser, driver ID, etc.). Although there is general documentation available for this API, it actually is a client-customized API, so feel free to make an inquiry for your own use-cases.
+
+    All endpoints refer to device IDs, which are the same that you use when communicating with the devices API.
+
+    This API is a WIP and we're adding more and more commands and functionalities each day.
+servers:
+  - url: 'https://connectivity.gps-telematics.co.uk:3000/vehicles'
+    description: Vehicles API
+paths:
+  '/{deviceId}':
+    parameters:
+      - type: string
+        name: deviceId
+        in: path
+        description: A UUID that represents a device.
+        schema:
+          type: string
+        required: true
+    get:
+      summary: "Obtain vehicle's last known information"
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/vehiclegpsinformation.v1.yaml
+        '404':
+          description: Could not find a vehicle by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      description: 'Gets the latest known position and GPS data of the vehicle, as well as other relevant information.'
+      security:
+        - Client password: []
+      requestBody: {}
+      operationId: getVehiclePosition
+      parameters: []
+  '/{deviceId}/start':
+    post:
+      summary: ''
+      responses:
+        '200':
+          description: Vehicle performed the requested command successfully.
+        '404':
+          description: Could not find a vehicle by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+        '408':
+          description: 'Request timeout, probably because the Astra device was unavailable at the time.'
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      description: Start a vehicle.
+      operationId: startVehicle
+      security:
+        - Client password: []
+      requestBody: {}
+    parameters:
+      - schema:
+          type: string
+        name: deviceId
+        in: path
+        required: true
+        description: A UUID that represents a device.
+  '/{deviceId}/stop':
+    parameters:
+      - type: string
+        name: deviceId
+        in: path
+        required: true
+        description: A UUID that represents a device.
+    post:
+      summary: ''
+      responses:
+        '200':
+          description: Vehicle performed the requested command successfully.
+        '404':
+          description: Could not find a device by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+        '408':
+          description: 'Request timeout, probably because the Astra device was unavailable at the time.'
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      description: Stop a vehicle.
+      security:
+        - Client password: []
+      requestBody: {}
+  '/{deviceId}/gps':
+    parameters:
+      - type: string
+        name: deviceId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/vehiclegpsinformation.v1.yaml
+      description: Actively polls the device for the current GPS position.
+      security:
+        - Client password: []
+      requestBody: {}
+components:
+  schemas: {}
+  securitySchemes:
+    Client password:
+      type: http
+      scheme: Bearer
+      description: Use the authentication bearer token obtained from the `/auth/token` endpoint

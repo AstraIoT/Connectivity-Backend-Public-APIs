@@ -13,10 +13,8 @@ paths:
       responses:
         '200':
           description: OK
-      description: >-
-        Subscribe to your device's reports and get their status in real-time. The
-        system will POST you at the URL you provide every time that a new report
-        arrives from one of your devices.
+      description: |-
+        Subscribe to your device's reports and get their status in real-time. The system will POST you at the URL you provide every time that a new report arrives from one of your devices.
 
 
 
@@ -145,11 +143,7 @@ paths:
 
 
 
-
-        Please take notice that a callback is defined for this hook in this same
-        `.yml` file, even though you are not able to see it in the browser.
-        Please inspect the raw OpenAPI definition files to obtain information
-        about the schema used for notifying your applications.
+        Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the raw OpenAPI definition files to obtain information about the schema used for notifying your applications.
       security:
         - Client password: []
       requestBody:
@@ -167,6 +161,7 @@ paths:
               responses:
                 '200':
                   description: OK
+      operationId: subscribeToReports
     parameters: []
   /events:
     post:
@@ -174,16 +169,11 @@ paths:
       responses:
         '200':
           description: OK
-      description: >-
-        Subscribe a URL to receive a POST on any important events of your
-        devices. You can define which type of event to subscribe to.
+      description: |-
+        Subscribe a URL to receive a POST on any important events of your devices. You can define which type of event to subscribe to.
 
 
-
-        Please take notice that a callback is defined for this hook in this same
-        `.yml` file, even though you are not able to see it in the browser.
-        Please inspect the raw OpenAPI definition files to obtain information
-        about the schema used for notifying your applications.
+        Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the raw OpenAPI definition files to obtain information about the schema used for notifying your applications.
       requestBody:
         content:
           application/json:
@@ -191,6 +181,7 @@ paths:
               $ref: ./models/eventhook.v1.yaml
       security:
         - Client password: []
+      operationId: subscribeToEvent
 components:
   schemas: {}
   securitySchemes:

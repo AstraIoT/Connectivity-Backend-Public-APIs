@@ -1,0 +1,21 @@
+title: VehicleGpsInformation
+type: object
+description: GPS information of a vehicle.
+properties:
+  latitude:
+    type: number
+    format: float
+  longitude:
+    type: number
+    format: float
+  altitude:
+    type: number
+    format: float
+  timestamp:
+    type: string
+    format: date-time
+required:
+  - latitude
+  - longitude
+  - altitude
+  - timestamp
