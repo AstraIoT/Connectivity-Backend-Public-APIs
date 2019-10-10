@@ -86,10 +86,14 @@ paths:
                 $ref: ./models/command.v1.yaml
         description: An array of commands.
       operationId: sendCommand
+      tags:
+        - commands
+        - devices
   /all:
     get:
       summary: Get all your devices
-      tags: []
+      tags:
+        - devices
       responses:
         '200':
           description: OK
