@@ -7,7 +7,7 @@ servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/devices'
     description: Devices API
 paths:
-  '/{deviceId}':
+  '/devices/{deviceId}':
     parameters:
       - type: string
         name: deviceId
@@ -43,7 +43,7 @@ paths:
       parameters: []
       description: Returns the last known state of the device to the Astra Connectivity middleware. Note that this state might not represent reality at the moment of this query. The state is sent back to the caller using the latest report received.
       operationId: getDevice
-  '/{deviceId}/command':
+  '/devices/{deviceId}/command':
     parameters:
       - type: string
         name: deviceId
@@ -89,7 +89,7 @@ paths:
       tags:
         - commands
         - devices
-  /all:
+  /devices:
     get:
       summary: Get all your devices
       tags:
@@ -119,6 +119,7 @@ paths:
           name: limit
           description: 'Limit the response size (in device no.). Must be a value between 1 and 50, and default is 20.'
       operationId: getAllDevices
+    parameters: []
 components:
   schemas: {}
   securitySchemes:

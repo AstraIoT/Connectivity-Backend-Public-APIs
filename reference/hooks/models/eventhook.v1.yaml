@@ -7,29 +7,32 @@ properties:
       - timed interval elapsed
       - distance travelled exceeded
       - position on demand
-      - geofence event
+      - geofence
       - panic switch activated
-      - external io event
+      - external io
       - journey start
       - journey stop
       - heading change
       - low battery
-      - external power event
-      - idling start event
-      - idling end event
+      - external power
+      - idling start
+      - idling end
       - idling ongoing
-      - power on event
+      - power on
       - speed overthreshold
       - towing alarm
       - unauthorised driver alarm
       - collision alarm
-      - accel threshold maximum event
-      - cornering threshold maximum event
-      - decel threshold maximum event
+      - accel threshold maximum
+      - cornering threshold maximum
+      - decel threshold maximum
       - gps reacquired
-      - vehicle roll event
+      - vehicle roll
+    description: The specific event type to subscribe to.
   url:
     type: string
+    description: The URL you want the backend to POST to.
 required:
   - event_type
   - url
+description: ''

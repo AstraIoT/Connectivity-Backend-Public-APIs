@@ -1,6 +1,6 @@
 title: CommandResponse
 type: object
-description: ''
+description: Response to a command sent to a device.
 properties:
   command:
     type: string
