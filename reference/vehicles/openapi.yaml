@@ -62,7 +62,7 @@ paths:
             application/json:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
-      description: Start a vehicle. This is a synchronous call.
+      description: 'Start a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
       operationId: startVehicle
       security:
         - Client password: []
@@ -95,7 +95,7 @@ paths:
             application/json:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
-      description: Stop a vehicle. This is a synchronous call.
+      description: 'Stop a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
       security:
         - Client password: []
       requestBody: {}
@@ -129,7 +129,7 @@ paths:
             application/json:
               schema:
                 $ref: ./models/vehiclegpsinformation.v1.yaml
-      description: Actively polls the device for the current GPS position. This is a synchronous call.
+      description: 'Actively polls the device for the current GPS position. This is a synchronous call, so if your device is not online it will timeout.'
       security:
         - Client password: []
       requestBody: {}
