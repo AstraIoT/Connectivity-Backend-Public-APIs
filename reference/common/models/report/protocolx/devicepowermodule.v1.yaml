@@ -1,20 +1,17 @@
 title: DevicePower
 type: object
+description: '`DEVICE POWER` module. The power status of the Astra device goes into this module.'
 properties:
   externalInputVoltage:
-    type: integer
-    description: |+
-      device input voltage, to a resolution of 0.2 Volts in integer format, supporting a maximum of 51.0V.  The integer value should be multiplied by 0.2 to recover the actual input voltage
+    type: number
+    description: |-
+      Device input voltage, to a resolution of 0.2 Volts, supporting a maximum of 51.0V.
 
-      e.g. integer value of 69 = 13.8V  (69 multiplied by 0.2 = 13.8V)
-       integer value of 150 = 30.0V  (150 multiplied by 0.2 = 30.0V)
-
-      Note that a value of zero volts is valid, since the device has an internal battery and can operate with no external power present.
-
-
+      Note that a value of 0 volts is valid, since the device has an internal battery and can operate with no external power present.
+    format: float
+    minimum: 0
+    maximum: 51
+    multipleOf: 0.2
   internalBackUpBatteryLevel:
     type: integer
-    description: |
-      The charge level of the internal battery as a percentage in integer format.  A value of 100 therefore represents a fully charged battery
-required: []
-description: '`DEVICE POWER` module. The power status of the Astra device goes into this module.'
+    description: The charge level of the internal battery as a percentage in integer format. A value of 100 therefore represents a fully charged battery.
