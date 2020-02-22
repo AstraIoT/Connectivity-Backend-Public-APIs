@@ -1,0 +1,28 @@
+title: ReportHeader
+type: object
+description: This module contains information about a report and the causes that triggered it.
+x-examples: {}
+properties:
+  reportSequenceNumber:
+    type: integer
+    description: Increments by one with each successive report and rolls back to zero after reaching the max. of 255. Can be used to detect duplicate or missing data.
+    minimum: 0
+    maximum: 255
+  reportModuleMask:
+    type: array
+    uniqueItems: true
+    description: 'Indicates which of the following modules are included in the packet and allows correct parsing of the data. Modules can be enabled/disabled by device configuration. The enabled modules may be included in every report or only when certain events occur, trailer ID for example, will be included only when a new trailer ID is read or the existing one is disconnected.'
+    items:
+      type: integer
+  rtcTime:
+    type: string
+    format: date-time
+    description: GTM timestamp of the event/report.
+  reasonFlags:
+    type: array
+    items:
+      type: string
+  statusFlags:
+    type: string
+required:
+  - reportSequenceNumber
