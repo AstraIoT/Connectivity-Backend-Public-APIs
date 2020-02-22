@@ -1,6 +1,6 @@
 title: GpsDataModule
 type: object
-description: "Gps Data module. Data acquired directly from the device's GPS goes into this module."
+description: "`GPS DATA`\x1D module. Data acquired directly from the device's GPS goes into this module."
 properties:
   lastKnownGpsTimestamp:
     type: string

@@ -17,4 +17,4 @@ properties:
     description: |
       The charge level of the internal battery as a percentage in integer format.  A value of 100 therefore represents a fully charged battery
 required: []
-description: Device Power module. The power status of the Astra device goes into this module.
+description: '`DEVICE POWER` module. The power status of the Astra device goes into this module.'

@@ -1,6 +1,6 @@
 title: ReportHeader
 type: object
-description: This module contains information about a report and the causes that triggered it.
+description: 'Contains information about a report, the causes that triggered it and the status of the device at the point of generating it.'
 x-examples: {}
 properties:
   sequenceNumber:
@@ -23,7 +23,9 @@ properties:
     items:
       type: string
   statusFlags:
-    type: string
+    type: array
+    items:
+      type: string
 required:
   - sequenceNumber
   - moduleMask

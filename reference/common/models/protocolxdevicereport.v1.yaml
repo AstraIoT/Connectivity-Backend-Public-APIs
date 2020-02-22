@@ -11,8 +11,10 @@ properties:
       For example, the `DEVICE POWER` module will be in the first position of the array, the `GPS DATA` in the second, etc.
     items:
       anyOf:
-        - $ref: ./report/protocolx/devicepower.v1.yaml
-        - $ref: ./report/protocolx/gpsdata.v1.yaml
+        - $ref: ./report/protocolx/devicepowermodule.v1.yaml
+        - $ref: ./report/protocolx/gpsdatamodule.v1.yaml
+        - $ref: ./report/protocolx/digitalsmodule.v1.yaml
+        - $ref: ./report/protocolx/analoguesmodule.v1.yaml
 required:
-  - modules
   - header
+  - modules

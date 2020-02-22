@@ -1,0 +1,24 @@
+title: DigitalsModule
+type: object
+description: '`DIGITALS` module. Includes information about the status of the digital I/Os of the device.'
+properties:
+  digitalInputs:
+    type: array
+    description: 'The value at position `x` relates to the state of digital input `x` of the device: if `true`, digital input is on, if `false` is off.'
+    items:
+      type: boolean
+  digitalOutputs:
+    type: array
+    description: 'The value at position `x` relates to the state of digital output `x` of the device: if `true`, digital output is on, if `false` is off.'
+    items:
+      type: boolean
+  digitalInputsChanges:
+    description: Indicates which digital inputs have changed state since the last report.
+    type: array
+    items:
+      type: boolean
+  digitalOutputsChanges:
+    description: Indicates which digital outputs have changed state since the last report.
+    type: array
+    items:
+      type: boolean
