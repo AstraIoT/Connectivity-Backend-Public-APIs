@@ -1,6 +1,18 @@
 title: ProtocolXDeviceReport
-type: object
 description: Report generated from a device using the protocol X specification.
+type: object
 properties:
-  basicData:
-    type: string
+  header:
+    $ref: ./report/reportheader.v1.yaml
+  modules:
+    type: array
+    description: |-
+      An array that contains all modules in their respective positions. If a module is not included in this report, the value in the position that it occupies will be `null`.
+      For example, the `DEVICE POWER` module will be in the first position of the array, the `GPS DATA` in the second, etc.
+    items:
+      anyOf:
+        - $ref: ./report/protocolx/devicepower.v1.yaml
+        - $ref: ./report/protocolx/gpsdata.v1.yaml
+required:
+  - modules
+  - header
