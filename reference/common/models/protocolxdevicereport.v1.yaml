@@ -1,6 +1,6 @@
+type: object
 title: ProtocolXDeviceReport
 description: Report generated from a device using the protocol X specification.
-type: object
 properties:
   header:
     $ref: ./report/reportheader.v1.yaml

@@ -1,0 +1,10 @@
+title: GsmNetworkInfoModule
+type: object
+description: '`GSM NETWORK INFO` module.'
+properties:
+  mcc:
+    type: integer
+    description: GSM mobile network country code (MCC) - 3 digits.
+  mnc:
+    type: integer
+    description: GSM mobile network operator code (MNC) - 2 or 3 digits.

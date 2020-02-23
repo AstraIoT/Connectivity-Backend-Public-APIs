@@ -15,3 +15,6 @@ properties:
   internalBackUpBatteryLevel:
     type: integer
     description: The charge level of the internal battery as a percentage in integer format. A value of 100 therefore represents a fully charged battery.
+required:
+  - externalInputVoltage
+  - internalBackUpBatteryLevel
