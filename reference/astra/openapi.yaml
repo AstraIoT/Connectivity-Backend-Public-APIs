@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+  title: Astra
+  version: '1.0'
+  description: The Astra API provides Astra-specific functions.
+  contact:
+    name: Phil Vella
+    email: phil@gps-telematics.co.uk
+servers:
+  - url: 'https://connectivity.gps-telematics.co.uk:3000/astra'
+    description: Astra
+components:
+  schemas: {}
+  securitySchemes:
+    Basic Access Authentication:
+      type: http
+      scheme: Basic
+      description: 'Provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front.'
+paths:
+  /driverId:
+    get:
+      summary: Get all Driver IDs
+      tags: []
+      responses: {}
+      operationId: getAllDriverIds
+      description: Get the list of authorised driver IDs
+    post:
+      summary: Add a new Driver ID
+      operationId: addNewDriverId
+      responses:
+        '200':
+          description: OK

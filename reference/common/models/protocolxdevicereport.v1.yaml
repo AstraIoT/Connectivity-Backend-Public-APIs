@@ -1,6 +1,6 @@
 type: object
 title: ProtocolXDeviceReport
-description: Report generated from a device using the protocol X specification.
+description: Report generated from an Astra device using the protocol X specification.
 properties:
   header:
     $ref: ./report/reportheader.v1.yaml
@@ -15,6 +15,12 @@ properties:
         - $ref: ./report/protocolx/gpsdatamodule.v1.yaml
         - $ref: ./report/protocolx/digitalsmodule.v1.yaml
         - $ref: ./report/protocolx/analoguesmodule.v1.yaml
+        - $ref: ./report/protocolx/driverbehaviourmodule.v1.yaml
+        - $ref: ./report/protocolx/signalqualitymodule.v1.yaml
+        - $ref: ./report/protocolx/gsmnetworkinfomodule.v1.yaml
+        - $ref: ./report/protocolx/geofencesmodule.v1.yaml
+        - $ref: ./report/protocolx/driveridmodule.v1.yaml
 required:
   - header
   - modules
+x-examples: {}
