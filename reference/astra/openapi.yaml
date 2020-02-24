@@ -10,7 +10,47 @@ servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/astra'
     description: Astra
 components:
-  schemas: {}
+  schemas:
+    DriverId:
+      title: DriverId
+      type: object
+      description: A Driver ID.
+      properties:
+        iButtonFamilyCode:
+          type:
+            - integer
+            - 'null'
+          description: 'iButton family code, if the source is an iButton. If not, this will be `null`.'
+          minimum: 1
+          maximum: 255
+          multipleOf: 1
+        serialNumber:
+          type: string
+          description: ID serial number as a string of 8 consecutive hexadecimal bytes.
+          example: 001D001FCDA3B8FF
+          minLength: 16
+          maxLength: 16
+          pattern: '^[0-9a-fA-F]{16}'
+      required:
+        - iButtonFamilyCode
+        - serialNumber
+    DriverIdConfiguration:
+      title: DriverIdConfiguration
+      allOf:
+        - $ref: '#/components/schemas/DriverId'
+        - $ref: '#/components/schemas/DriverIdStatus'
+      description: A Driver ID configuration.
+    DriverIdStatus:
+      type: object
+      title: DriverIdStatus
+      description: Approval status of a Driver ID.
+      properties:
+        status:
+          type: string
+          description: Approval status of a Driver ID.
+          enum:
+            - APPROVED
+            - DECLINED
   securitySchemes:
     Basic Access Authentication:
       type: http
@@ -18,6 +58,51 @@ components:
       description: 'Provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front.'
 paths:
   '/devices/{deviceId}/driverId':
+    post:
+      summary: Add new Driver ID(s)
+      operationId: addDriverIds
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request. Check that you have provided addecuate Driver ID(s).
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+        '404':
+          description: Could not find a device by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      description: Approve or decline one or multiple Driver IDs for this device. Any already existing Driver IDs will be overwritten with the newly provided configuration.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/DriverIdConfiguration'
+                - type: array
+                  description: Array of multiple Driver ID configuration requests.
+                  items:
+                    $ref: '#/components/schemas/DriverIdConfiguration'
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+        description: 'You can provide a single Driver ID, in a JSON object, or multiple Driver IDs, in a JSON array.'
+      security:
+        - Basic Access Authentication: []
+      tags:
+        - astra
+    parameters:
+      - schema:
+          type: string
+        name: deviceId
+        in: path
+        description: A UUID that represents a device.
+        required: true
     get:
       summary: Get all Driver IDs
       tags: []
@@ -30,55 +115,34 @@ paths:
                 type: array
                 uniqueItems: true
                 minItems: 1
+                description: An array of Driver ID objects.
                 items:
-                  type: string
+                  $ref: '#/components/schemas/DriverIdConfiguration'
         '204':
           description: No Driver IDs added for this device yet.
       operationId: getAllDriverIds
-      description: Get the list of authorised driver IDs for this device.
+      description: Get the list of both approved and declined Driver IDs for this device.
       security:
         - Basic Access Authentication: []
-    post:
-      summary: Add a new Driver ID
-      operationId: addNewDriverId
+    delete:
+      summary: Delete Driver ID(s)
+      operationId: deleteDriverIds
       responses:
         '200':
           description: OK
-        '400':
-          description: Bad Request. Check that you have provided an addecuate Driver ID.
-          content:
-            application/json:
-              schema:
-                $ref: ../common/models/error/genericerror.v1.yaml
         '404':
           description: Could not find a device by the provided ID.
-          content:
-            application/json:
-              schema:
-                $ref: ../common/models/error/genericerror.v1.yaml
-      description: Authorise a new Driver ID to operate this device.
+      description: Delete one or more Driver IDs; the backend will not approve nor decline the provided Driver IDs any longer.
+      security:
+        - Basic Access Authentication: []
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                driverId:
-                  type: string
-                  description: The Driver ID as a string of 8 consecutive hexadecimal bytes.
-                  example: 001D001FCDA3B8FF
-                  minLength: 16
-                  maxLength: 16
-                  pattern: '[0-9a-fA-F]{16}'
-              required:
-                - driverId
-        description: ''
-      security:
-        - Basic Access Authentication: []
-    parameters:
-      - schema:
-          type: string
-        name: deviceId
-        in: path
-        description: A UUID that represents a device.
-        required: true
+              oneOf:
+                - $ref: '#/components/schemas/DriverId'
+                - type: array
+                  description: Array of multiple Driver IDs.
+                  items:
+                    $ref: '#/components/schemas/DriverId'
+        description: 'You can provide a single Driver ID, in a JSON object, or multiple Driver IDs, in a JSON array.'
