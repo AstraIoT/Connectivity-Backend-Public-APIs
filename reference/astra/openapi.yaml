@@ -17,16 +17,68 @@ components:
       scheme: Basic
       description: 'Provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front.'
 paths:
-  /driverId:
+  '/devices/{deviceId}/driverId':
     get:
       summary: Get all Driver IDs
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                uniqueItems: true
+                minItems: 1
+                items:
+                  type: string
+        '204':
+          description: No Driver IDs added for this device yet.
       operationId: getAllDriverIds
-      description: Get the list of authorised driver IDs
+      description: Get the list of authorised driver IDs for this device.
+      security:
+        - Basic Access Authentication: []
     post:
       summary: Add a new Driver ID
       operationId: addNewDriverId
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request. Check that you have provided an addecuate Driver ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+        '404':
+          description: Could not find a device by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      description: Authorise a new Driver ID to operate this device.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                driverId:
+                  type: string
+                  description: The Driver ID as a string of 8 consecutive hexadecimal bytes.
+                  example: 001D001FCDA3B8FF
+                  minLength: 16
+                  maxLength: 16
+                  pattern: '[0-9a-fA-F]{16}'
+              required:
+                - driverId
+        description: ''
+      security:
+        - Basic Access Authentication: []
+    parameters:
+      - schema:
+          type: string
+        name: deviceId
+        in: path
+        description: A UUID that represents a device.
+        required: true
