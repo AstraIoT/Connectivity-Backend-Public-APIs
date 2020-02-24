@@ -34,12 +34,16 @@ components:
       required:
         - iButtonFamilyCode
         - serialNumber
+      x-tags:
+        - models
     DriverIdConfiguration:
       title: DriverIdConfiguration
       allOf:
         - $ref: '#/components/schemas/DriverId'
         - $ref: '#/components/schemas/DriverIdStatus'
       description: A Driver ID configuration.
+      x-tags:
+        - models
     DriverIdStatus:
       type: object
       title: DriverIdStatus
@@ -51,11 +55,13 @@ components:
           enum:
             - APPROVED
             - DECLINED
+      x-tags:
+        - models
   securitySchemes:
-    Basic Access Authentication:
+    ClientPassword:
       type: http
       scheme: Basic
-      description: 'Provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front.'
+      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.
 paths:
   '/devices/{deviceId}/driverId':
     post:
@@ -76,7 +82,10 @@ paths:
             application/json:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
-      description: Approve or decline one or multiple Driver IDs for this device. Any already existing Driver IDs will be overwritten with the newly provided configuration.
+      description: |-
+        Approve or decline one or multiple Driver IDs for this device. Any already existing Driver IDs will be overwritten with the newly provided configuration.
+
+        The backend will store the provided Driver ID configurations and act accordingly when a request for authorization is received from the device.
       requestBody:
         content:
           application/json:
@@ -93,9 +102,9 @@ paths:
               properties: {}
         description: 'You can provide a single Driver ID, in a JSON object, or multiple Driver IDs, in a JSON array.'
       security:
-        - Basic Access Authentication: []
+        - ClientPassword: []
       tags:
-        - astra
+        - driver-id
     parameters:
       - schema:
           type: string
@@ -105,7 +114,8 @@ paths:
         required: true
     get:
       summary: Get all Driver IDs
-      tags: []
+      tags:
+        - driver-id
       responses:
         '200':
           description: OK
@@ -123,7 +133,7 @@ paths:
       operationId: getAllDriverIds
       description: Get the list of both approved and declined Driver IDs for this device.
       security:
-        - Basic Access Authentication: []
+        - ClientPassword: []
     delete:
       summary: Delete Driver ID(s)
       operationId: deleteDriverIds
@@ -132,9 +142,12 @@ paths:
           description: OK
         '404':
           description: Could not find a device by the provided ID.
-      description: Delete one or more Driver IDs; the backend will not approve nor decline the provided Driver IDs any longer.
+      description: |-
+        Delete one or more Driver IDs; the backend will not approve nor decline the provided Driver IDs any longer when receiving a request from the device.
+
+        If the HTTP request syntax is OK but any or all of the provided Driver IDs are not found in the backend for this device, the HTTP request will still run happily and return a 200 HTTP code.
       security:
-        - Basic Access Authentication: []
+        - ClientPassword: []
       requestBody:
         content:
           application/json:
@@ -146,3 +159,5 @@ paths:
                   items:
                     $ref: '#/components/schemas/DriverId'
         description: 'You can provide a single Driver ID, in a JSON object, or multiple Driver IDs, in a JSON array.'
+      tags:
+        - driver-id

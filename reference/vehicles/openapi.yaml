@@ -40,7 +40,7 @@ paths:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: 'Gets the latest known position and GPS data of the vehicle, as well as other relevant information.'
       security:
-        - Client password: []
+        - ClientPassword: []
       requestBody: {}
       operationId: getVehiclePosition
       parameters: []
@@ -65,7 +65,7 @@ paths:
       description: 'Start a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
       operationId: startVehicle
       security:
-        - Client password: []
+        - ClientPassword: []
       requestBody: {}
       tags:
         - commands
@@ -97,7 +97,7 @@ paths:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: 'Stop a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
       security:
-        - Client password: []
+        - ClientPassword: []
       requestBody: {}
       tags:
         - commands
@@ -131,7 +131,7 @@ paths:
                 $ref: ./models/vehiclegpsinformation.v1.yaml
       description: 'Actively polls the device for the current GPS position. This is a synchronous call, so if your device is not online it will timeout.'
       security:
-        - Client password: []
+        - ClientPassword: []
       requestBody: {}
       tags:
         - commands
@@ -140,7 +140,7 @@ paths:
 components:
   schemas: {}
   securitySchemes:
-    Client password:
+    ClientPassword:
       type: http
       scheme: Bearer
-      description: Use the authentication bearer token obtained from the `/auth/token` endpoint
+      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.

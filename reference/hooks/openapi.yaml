@@ -18,7 +18,7 @@ paths:
 
         Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the raw OpenAPI definition files to obtain information about the schema used for notifying your applications.
       security:
-        - Client password: []
+        - ClientPassword: []
       requestBody:
         content:
           application/json:
@@ -55,7 +55,7 @@ paths:
             schema:
               $ref: ./models/eventhook.v1.yaml
       security:
-        - Client password: []
+        - ClientPassword: []
       operationId: subscribeToEvent
       tags:
         - events
@@ -63,7 +63,7 @@ paths:
 components:
   schemas: {}
   securitySchemes:
-    Client password:
+    ClientPassword:
       type: http
       scheme: Bearer
-      description: Use the authentication bearer token obtained from the `/auth/token` endpoint
+      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.

@@ -140,4 +140,4 @@ components:
     ClientPassword:
       type: http
       scheme: Bearer
-      description: Use the authentication bearer token obtained from the `/auth/token` endpoint
+      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.
