@@ -8,3 +8,6 @@ properties:
   mnc:
     type: integer
     description: GSM mobile network operator code (MNC) - 2 or 3 digits.
+required:
+  - mcc
+  - mnc

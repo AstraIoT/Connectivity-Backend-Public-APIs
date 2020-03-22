@@ -1,5 +1,6 @@
 title: SignalQualityModule
 type: object
+description: '`SIGNAL QUALITY` module. Includes information about the quality of the signal.'
 properties:
   numberOfSats:
     type: integer
@@ -12,4 +13,6 @@ properties:
     description: 'GSM signal strength, in negative dBms (from -53 to -111, the closer to zero the stronger the signal).'
     minimum: -111
     maximum: -53
-description: '`SIGNAL QUALITY` module. Includes information about the quality of the signal.'
+required:
+  - numberOfSats
+  - gsmRssi
