@@ -131,11 +131,33 @@ paths:
           description: 'Limit the response size (in device no.). Must be a value between 1 and 50, and default is 20.'
       operationId: getAllDevices
     parameters: []
+  '/devices/{deviceId}/reports':
+    parameters:
+      - schema:
+          type: string
+        name: deviceId
+        in: path
+        required: true
+        description: ''
+    get:
+      summary: Get device reports
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./models/paginateddevicesresponse.v1.yaml
+      operationId: getDeviceReports
+      description: This endpoint provides a convenient way of obtaining all device reports that match a given query. Reports will be sent back in a paginated response
+      requestBody: {}
 components:
   schemas:
     DeviceId:
       title: DeviceId
       type: string
+      description: A UUID that identifies a particular IoT device.
   securitySchemes:
     ClientPassword:
       type: http

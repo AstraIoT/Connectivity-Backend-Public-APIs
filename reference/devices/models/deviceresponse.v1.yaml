@@ -1,19 +1,18 @@
 title: DeviceResponse
 type: object
+description: Response model of a device registered in the system.
 properties:
-  device_id:
-    type: string
-    format: uuid
+  deviceId:
+    $ref: '../openapi.yaml#/components/schemas/DeviceId'
   imei:
     type: string
-  firmware_version:
+  firmwareVersion:
     type: string
-  last_seen:
+  lastSeen:
     type: string
     format: date-time
 required:
-  - device_id
+  - deviceId
   - imei
-  - firmware_version
-  - last_seen
-description: Response model of a device registered in the system.
+  - firmwareVersion
+  - lastSeen
