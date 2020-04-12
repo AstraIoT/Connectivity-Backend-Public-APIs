@@ -12,13 +12,7 @@ servers:
 paths:
   '/devices/{deviceId}':
     parameters:
-      - type: string
-        name: deviceId
-        in: path
-        schema:
-          type: string
-        description: A UUID that represents a device.
-        required: true
+      - $ref: '#/components/parameters/deviceId'
     get:
       summary: "Obtain the device's last known state"
       tags:
@@ -36,14 +30,7 @@ paths:
               examples: {}
           headers:
             X-Response-Format:
-              schema:
-                type: string
-                enum:
-                  - astra-protocol-x
-                  - astra-protocol-k
-                  - astra-protocol-m
-              description: "A string telling you how to interpret the JSON object that you'll be receiving. Depends on the vendor of the device, the protocol version, etc."
-              required: true
+              $ref: '#/components/parameters/X-Response-Format'
         '204':
           description: The device has not connected nor sent any data to the backend yet.
         '404':
@@ -59,13 +46,7 @@ paths:
       operationId: getDevice
   '/devices/{deviceId}/command':
     parameters:
-      - type: string
-        name: deviceId
-        in: path
-        required: true
-        description: A UUID that represents a device.
-        schema:
-          type: string
+      - $ref: '#/components/parameters/deviceId'
     post:
       summary: Send a command to a device
       responses:
@@ -136,12 +117,7 @@ paths:
     parameters: []
   '/devices/{deviceId}/reports':
     parameters:
-      - schema:
-          type: string
-        name: deviceId
-        in: path
-        required: true
-        description: ''
+      - $ref: '#/components/parameters/deviceId'
     get:
       summary: Get device reports
       tags: []
@@ -151,10 +127,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/paginateddevicesresponse.v1.yaml
+                $ref: ./models/paginateddevicereportsresponse.v1.yaml
+          headers:
+            X-Response-Format:
+              $ref: '#/components/parameters/X-Response-Format'
       operationId: getDeviceReports
       description: This endpoint provides a convenient way of obtaining all device reports that match a given query. Reports will be sent back in a paginated response
       requestBody: {}
+      security:
+        - ClientPassword: []
 components:
   schemas:
     DeviceId:
@@ -166,3 +147,23 @@ components:
       type: http
       scheme: Bearer
       description: Use the authentication bearer token obtained from the `/auth/token` endpoint.
+  parameters:
+    deviceId:
+      in: path
+      name: deviceId
+      schema:
+        type: string
+        format: uuid
+      description: A UUID representing a particular IoT device.
+      required: true
+    X-Response-Format:
+      schema:
+        type: string
+        enum:
+          - astra-protocol-x
+          - astra-protocol-k
+          - astra-protocol-m
+      description: "A string telling you how to interpret the JSON object(s) that you'll be receiving. Depends on the vendor of the device, the protocol version, etc."
+      required: true
+      name: X-Response-Format
+      in: header

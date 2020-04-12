@@ -3,7 +3,7 @@ type: object
 description: Response model of a device registered in the system.
 properties:
   deviceId:
-    $ref: '../openapi.yaml#/components/schemas/DeviceId'
+    $ref: '../openapi.v1.yaml#/components/schemas/DeviceId'
   imei:
     type: string
   firmwareVersion:

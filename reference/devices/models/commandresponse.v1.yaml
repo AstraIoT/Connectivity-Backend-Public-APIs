@@ -3,11 +3,10 @@ type: object
 description: Response to a command sent to a device.
 properties:
   command:
-    type: string
-    description: The original command that triggered this response.
-  device_response:
+    $ref: ./command.v1.yaml
+  deviceResponse:
     type: string
     description: The response that the Astra device has had for the previous command.
 required:
   - command
-  - device_response
+  - deviceResponse
