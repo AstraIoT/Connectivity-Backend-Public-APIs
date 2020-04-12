@@ -46,15 +46,19 @@ paths:
         - hooks
     parameters: []
     delete:
-      summary: ''
-      operationId: unsubscribeToReports
+      summary: "Unsubscribe from a device's reports"
+      operationId: unsubscribeFromReports
       responses:
         '200':
           description: OK
         '204':
           description: There was no hook configured.
-      description: "Unsubscribe to your devices' reports."
+      description: "Unsubscribe from your devices' reports."
       requestBody: {}
+      parameters: []
+      tags:
+        - reports
+        - hooks
   /events:
     post:
       summary: Subscribe to important device events
@@ -77,8 +81,8 @@ paths:
         - events
         - hooks
     delete:
-      summary: ''
-      operationId: unsubscribeToEvent
+      summary: Unsubscribe from important device events
+      operationId: unsubscribeFromEvent
       responses:
         '200':
           description: OK
@@ -93,6 +97,9 @@ paths:
               properties:
                 eventType:
                   $ref: ./models/eventtype.v1.yaml
+      tags:
+        - events
+        - hooks
 components:
   schemas: {}
   securitySchemes:
