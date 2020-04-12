@@ -3,6 +3,9 @@ info:
   title: Devices
   version: '1.0'
   description: The devices API can be used to poll the status of devices and control them.
+  contact:
+    name: Miguel Vera
+    email: miguel@astraiot.co.uk
 servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/devices'
     description: Devices API

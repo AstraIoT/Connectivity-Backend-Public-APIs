@@ -3,6 +3,9 @@ info:
   title: Hooks
   version: '1.0'
   description: 'The hooks API can be used to subscribe to relevant events that a device might trigger in its usage. Unless otherwise specified, all hooks will POST to the URL that you provide.'
+  contact:
+    name: Miguel Vera
+    email: miguel@astraiot.co.uk
 servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/hooks'
     description: Hooks API

@@ -4,8 +4,8 @@ info:
   version: '1.0'
   description: API that provides authentication to all applying clients.
   contact:
-    name: Phil Vella
-    email: phil@gps-telematics.co.uk
+    name: Miguel Vera
+    email: miguel@astraiot.co.uk
 servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/auth'
     description: Backend

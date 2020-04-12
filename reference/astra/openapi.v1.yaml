@@ -4,8 +4,8 @@ info:
   version: '1.0'
   description: The Astra API provides Astra-specific functions.
   contact:
-    name: Phil Vella
-    email: phil@gps-telematics.co.uk
+    name: Miguel Vera
+    email: miguel@astraiot.co.uk
 servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/astra'
     description: Astra
@@ -57,6 +57,7 @@ components:
             - DECLINED
       x-tags:
         - models
+    
   securitySchemes:
     ClientPassword:
       type: http

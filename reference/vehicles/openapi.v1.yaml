@@ -8,6 +8,9 @@ info:
     All endpoints refer to device IDs, which are the same that you use when communicating with the devices API.
 
     This API is a WIP and we're adding more and more commands and functionalities each day.
+  contact:
+    name: Miguel Vera
+    email: miguel@astraiot.co.uk
 servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/vehicles'
     description: Vehicles API
