@@ -1,38 +1,11 @@
 title: EventHook
 type: object
-properties:
-  event_type:
-    type: string
-    enum:
-      - timed interval elapsed
-      - distance travelled exceeded
-      - position on demand
-      - geofence
-      - panic switch activated
-      - external io
-      - journey start
-      - journey stop
-      - heading change
-      - low battery
-      - external power
-      - idling start
-      - idling end
-      - idling ongoing
-      - power on
-      - speed overthreshold
-      - towing alarm
-      - unauthorised driver alarm
-      - collision alarm
-      - accel threshold maximum
-      - cornering threshold maximum
-      - decel threshold maximum
-      - gps reacquired
-      - vehicle roll
-    description: The specific event type to subscribe to.
-  url:
-    type: string
-    description: The URL you want the backend to POST to.
-required:
-  - event_type
-  - url
 description: ''
+properties:
+  eventType:
+    $ref: ./eventtype.v1.yaml
+  url:
+    $ref: ./hookurl.v1.yaml
+required:
+  - eventType
+  - url

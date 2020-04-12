@@ -26,7 +26,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./models/hookurl.v1.yaml
+              type: object
+              properties:
+                url:
+                  $ref: ./models/hookurl.v1.yaml
         description: ''
       callbacks:
         DeviceReportReceivedEvent:
@@ -42,6 +45,16 @@ paths:
         - reports
         - hooks
     parameters: []
+    delete:
+      summary: ''
+      operationId: unsubscribeToReports
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: There was no hook configured.
+      description: "Unsubscribe to your devices' reports."
+      requestBody: {}
   /events:
     post:
       summary: Subscribe to important device events
@@ -63,6 +76,23 @@ paths:
       tags:
         - events
         - hooks
+    delete:
+      summary: ''
+      operationId: unsubscribeToEvent
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: There was no hook configured.
+      description: Unsubscribe to a previously subscribed event.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                eventType:
+                  $ref: ./models/eventtype.v1.yaml
 components:
   schemas: {}
   securitySchemes:

@@ -6,6 +6,7 @@ info:
   contact:
     name: Miguel Vera
     email: miguel@astraiot.co.uk
+    url: 'https://www.linkedin.com/in/mikiloz'
 servers:
   - url: 'https://connectivity.gps-telematics.co.uk:3000/astra'
     description: Astra
@@ -57,7 +58,6 @@ components:
             - DECLINED
       x-tags:
         - models
-    
   securitySchemes:
     ClientPassword:
       type: http
