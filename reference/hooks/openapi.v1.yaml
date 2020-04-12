@@ -59,7 +59,9 @@ paths:
       tags:
         - reports
         - hooks
-  /events:
+      security:
+        - ClientPassword: []
+  '/events/{eventType}':
     post:
       summary: Subscribe to important device events
       responses:
@@ -73,7 +75,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./models/eventhook.v1.yaml
+              type: object
+              properties:
+                url:
+                  $ref: ./models/hookurl.v1.yaml
       security:
         - ClientPassword: []
       operationId: subscribeToEvent
@@ -89,17 +94,43 @@ paths:
         '204':
           description: There was no hook configured.
       description: Unsubscribe to a previously subscribed event.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                eventType:
-                  $ref: ./models/eventtype.v1.yaml
+      requestBody: {}
       tags:
         - events
         - hooks
+      security:
+        - ClientPassword: []
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - timed interval elapsed
+            - distance travelled exceeded
+            - position on demand
+            - geofence
+            - panic switch activated
+            - external io
+            - journey start
+            - journey stop
+            - heading change
+            - low battery
+            - external power
+            - idling start
+            - idling end
+            - idling ongoing
+            - power on
+            - speed overthreshold
+            - towing alarm
+            - unauthorised driver alarm
+            - collision alarm
+            - accel threshold maximum
+            - cornering threshold maximum
+            - decel threshold maximum
+            - gps reacquired
+            - vehicle roll
+        name: eventType
+        in: path
+        required: true
 components:
   schemas: {}
   securitySchemes:
