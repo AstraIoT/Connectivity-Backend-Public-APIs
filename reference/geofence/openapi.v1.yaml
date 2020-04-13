@@ -16,7 +16,8 @@ paths:
   '/geofences/{geofenceId}':
     get:
       summary: Get a geofence
-      tags: []
+      tags:
+        - geofences
       responses:
         '200':
           description: OK
@@ -51,6 +52,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GeofenceArea'
+      tags:
+        - geofences
     parameters:
       - $ref: '#/components/parameters/geofenceId'
   /hooks/:
@@ -77,8 +80,8 @@ paths:
                   $ref: ../hooks/models/hookurl.v1.yaml
         description: ''
       tags:
-        - geofences
         - hooks
+        - geofences
       callbacks:
         GeofenceEvent:
           '{$request.body#/url}':
@@ -91,7 +94,7 @@ paths:
       description: |-
         Subscribe to geofence alerts and get whether any of your devices have left or entered the designated areas at any time. The system will POST you at the URL you provide each time that happens.
 
-        Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the `GeofenceEvent` model in order to obtain information about the schema used for notifying your applications.
+        Please take notice that a callback is defined for this hook in this same `.yaml` file, even though you are not able to see it in the browser. Please inspect the `GeofenceEvent` model in order to obtain information about the schema used for notifying your applications.
     delete:
       summary: Unsubscribe from geofence alerts
       operationId: unsubscribeFromGeofenceAlerts
@@ -102,13 +105,13 @@ paths:
           description: There was no hook configured.
       requestBody: {}
       tags:
-        - reports
         - hooks
+        - geofences
       parameters: []
       description: Unsubscribe from geofence alerts.
   /geofences:
     post:
-      summary: ''
+      summary: Create a geofence
       operationId: createGeofence
       responses:
         '200':
@@ -134,6 +137,8 @@ paths:
             schema:
               $ref: '#/components/schemas/GeofenceAreaCreate'
       description: Create a geofence for your devices.
+      tags:
+        - geofences
     parameters: []
 components:
   schemas:
@@ -145,6 +150,8 @@ components:
       minLength: 1
       maxLength: 255
       pattern: '^[A-Za-z0-9-_]+'
+      x-tags:
+        - models
     GeofenceArea:
       title: GeofenceArea
       description: Defines the geometry of a geofence. Geofence is a GeoJSON object that defines a region in space that can interact with the fleet.
@@ -161,23 +168,20 @@ components:
           description: 'An array of tags, please check the `GeofenceTag` model on this API for validation constraints.'
         geoJson:
           $ref: '#/components/schemas/GeoJson'
-    GeofenceTags:
-      type: array
-      title: GeofenceTags
-      description: An array of geofence tags.
-      uniqueItems: true
-      maxItems: 32
-      minItems: 0
-      items:
-        $ref: '#/components/schemas/GeofenceTag'
+      x-tags:
+        - models
     GeoJson:
       title: GeoJson
       type: object
       description: 'A [GeoJSON](https://geojson.org) object, defined by the RFC 7946 standard. You can easily generate one with [this](geojson.io) tool.'
+      x-tags:
+        - models
     GeofenceId:
       title: GeofenceId
       type: string
       description: A UUID representing a configured geofence.
+      x-tags:
+        - models
     GeofenceAreaCreate:
       description: Defines the geometry of a geofence. Geofence is a GeoJSON object that defines a region in space that can interact with the fleet.
       title: GeofenceAreaCreate
@@ -198,6 +202,8 @@ components:
         - name
         - tags
         - geoJson
+      x-tags:
+        - models
     GeofenceEvent:
       title: GeofenceEvent
       type: object
@@ -229,16 +235,32 @@ components:
         - type
         - geofenceTags
         - geofenceName
-  securitySchemes: {}
-  parameters:
-    geofenceId:
-      in: path
-      name: geofenceId
-      schema:
-        type: string
-        format: uuid
-      description: A UUID representing an already created geofence.
-      required: true
-tags:
-  - name: geofences
-  - name: hooks
+      x-tags:
+        - hook-callbacks
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
+      description: |-
+        To authenticate each and every one of the requests made to this API using this security scheme, you should provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front, like this:
+        ```
+        Authorization: Basic ${base64EncodedToken}
+        ```
+        Take into account that you are sending your API key in plain text in every request, so consider using the OAuth2 security scheme to authenticate your requests instead.
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://connectivity.astraiot.co.uk:443/api/auth/v1/token'
+          scopes: {}
+      description: |-
+        Make a request with `Basic Access Authentication`, like is explained above, to the **Token URL** displayed at the bottom to obtain an authorization token.
+
+        Then, in each of the requests that you make to this API, you should provide the obtained token in the  `Authorization` header, like this:
+        ```
+        Authorization: Bearer ${token}
+        ```
+        Take into account that the token obtained through the **Token URL** has a TTL, so be sure to ensure its renewal.
+security:
+  - Basic: []
+  - OAuth2: []
