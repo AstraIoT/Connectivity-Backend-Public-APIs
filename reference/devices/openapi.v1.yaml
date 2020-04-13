@@ -165,6 +165,143 @@ paths:
           in: query
           name: reportReason
           description: Filter reports by the indicated report reason. The response will only contain reports that were triggered because of such reason.
+  '/hooks/events/{eventType}':
+    post:
+      summary: Subscribe to important device events
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: "Bad Request. Check your request's syntax."
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      description: |-
+        Subscribe a URL to receive a POST on any important events of your devices. You can define which type of event to subscribe to.
+
+        Please take notice that a callback is defined for this hook in this same `.yaml` file, even though you are not able to see it in the browser. Please inspect the `DeviceEventReceivedEvent` model in this API to obtain information about the schema used for notifying your applications.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  $ref: ../common/models/hooks/hookurl.v1.yaml
+      callbacks:
+        DeviceEventReceivedEvent:
+          '{$request.body#/url}':
+            post:
+              headers:
+                X-Response-Format:
+                  $ref: ../common/
+              requestBody:
+                $ref: ./models/events/devicereportsreceived.v1.yaml
+              responses:
+                '200':
+                  description: OK
+      operationId: subscribeToEvent
+      tags:
+        - hooks
+        - events
+    delete:
+      summary: Unsubscribe from important device events
+      operationId: unsubscribeFromEvent
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: There was no hook configured.
+      description: Unsubscribe from a previously subscribed event.
+      requestBody: {}
+      tags:
+        - hooks
+        - events
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - timed-interval-elapsed
+            - distance-travelled-exceeded
+            - position-on-demand
+            - geofence
+            - panic-switch-activated
+            - external-io
+            - journey-start
+            - journey-stop
+            - heading-change
+            - low-battery
+            - external-power
+            - idling-start
+            - idling-end
+            - idling-ongoing
+            - power-on
+            - speed-overthreshold
+            - towing-alarm
+            - unauthorised-driver-alarm
+            - collision-alarm
+            - accel-threshold-maximum
+            - cornering-threshold-maximum
+            - decel-threshold-maximum
+            - gps-reacquired
+            - vehicle-roll
+        name: eventType
+        in: path
+        required: true
+  /hooks/reports:
+    post:
+      summary: "Subscribe to a device's reports"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: "Bad Request. Check your request's syntax."
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      description: |-
+        Subscribe to your device's reports and get their status in real-time. The system will POST you at the URL you provide every time that a new report arrives from one of your devices.
+
+        Please take notice that a callback is defined for this hook in this same `.yaml` file, even though you are not able to see it in the browser. Please inspect the `DeviceReportsReceivedEvent` model in this API to obtain information about the schema used for notifying your applications.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  $ref: ../common/models/hooks/hookurl.v1.yaml
+        description: ''
+      callbacks:
+        DeviceReportReceivedEvent:
+          '{$request.body#/url}':
+            post:
+              requestBody:
+                $ref: ./models/events/devicereportreceivedevent.v1.yaml
+              responses:
+                '200':
+                  description: OK
+      operationId: subscribeToReports
+      tags:
+        - hooks
+        - reports
+    parameters: []
+    delete:
+      summary: "Unsubscribe from a device's reports"
+      operationId: unsubscribeFromReports
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: There was no hook configured.
+      description: "Unsubscribe from your devices' reports."
+      requestBody: {}
+      parameters: []
+      tags:
+        - hooks
+        - events
 components:
   schemas:
     DeviceId:
@@ -185,6 +322,95 @@ components:
       description: A string consisting on the firmware version of a device.
       x-tags:
         - models
+    EventType:
+      title: EventType
+      type: string
+      enum:
+        - timed-interval-elapsed
+        - distance-travelled-exceeded
+        - position-on-demand
+        - geofence
+        - panic-switch-activated
+        - external-io
+        - journey-start
+        - journey-stop
+        - heading-change
+        - low-battery
+        - external-power
+        - idling-start
+        - idling-end
+        - idling-ongoing
+        - power-on
+        - speed-overthreshold
+        - towing-alarm
+        - unauthorised-driver-alarm
+        - collision-alarm
+        - accel-threshold-maximum
+        - cornering-threshold-maximum
+        - decel-threshold-maximum
+        - gps-reacquired
+        - vehicle-roll
+      description: A specific event type to subscribe or unsubscribe to.
+      x-tags:
+        - models
+    DeviceReportsReceivedEvent:
+      title: DeviceReportsReceivedEvent
+      type: object
+      description: |-
+        Callback that contains one or multiple reports that the device has sent to the backend.
+
+        Also note that a response header `X-Response-Format` will be sent along this callback that will indicate the response format of the reports contained in the array. Check other endpoints in this API that also contain such header for more information.
+      properties:
+        deviceId:
+          $ref: '#/components/schemas/DeviceId'
+        reports:
+          type: array
+          items:
+            oneOf:
+              - $ref: ../common/models/protocolxdevicereport.v1.yaml
+              - $ref: ../common/models/protocolkdevicereport.v1.yaml
+              - $ref: ../common/models/protocolmdevicereport.v1.yaml
+      x-tags:
+        - hook-callbacks
+    DeviceEventReceivedEvent:
+      title: DeviceEventReceivedEvent
+      type: object
+      description: |-
+        Callback that contains information about an event that just took place for a particular device.
+
+        Also note that a response header `X-Response-Format` will be sent along this callback that will indicate the response format of the report contained in this callback. Check other endpoints in this API that also contain such header for more information.
+      properties:
+        deviceId:
+          $ref: '#/components/schemas/DeviceId'
+        eventType:
+          $ref: '#/components/schemas/EventType'
+        report:
+          oneOf:
+            - $ref: ../common/models/protocolxdevicereport.v1.yaml
+            - $ref: ../common/models/protocolkdevicereport.v1.yaml
+            - $ref: ../common/models/protocolmdevicereport.v1.yaml
+      x-tags:
+        - hook-callbacks
+  parameters:
+    deviceId:
+      in: path
+      name: deviceId
+      schema:
+        type: string
+        format: uuid
+      description: A UUID representing a particular IoT device.
+      required: true
+    X-Response-Format:
+      schema:
+        type: string
+        enum:
+          - astra-protocol-x
+          - astra-protocol-k
+          - astra-protocol-m
+      description: "A string telling you how to interpret the JSON object(s) that you'll be receiving. Depends on the vendor of the device, the protocol version, etc."
+      required: true
+      name: X-Response-Format
+      in: header
   securitySchemes:
     Basic:
       type: http
@@ -209,26 +435,6 @@ components:
         Authorization: Bearer ${token}
         ```
         Take into account that the token obtained through the **Token URL** has a TTL, so be sure to ensure its renewal.
-  parameters:
-    deviceId:
-      in: path
-      name: deviceId
-      schema:
-        type: string
-        format: uuid
-      description: A UUID representing a particular IoT device.
-      required: true
-    X-Response-Format:
-      schema:
-        type: string
-        enum:
-          - astra-protocol-x
-          - astra-protocol-k
-          - astra-protocol-m
-      description: "A string telling you how to interpret the JSON object(s) that you'll be receiving. Depends on the vendor of the device, the protocol version, etc."
-      required: true
-      name: X-Response-Format
-      in: header
 security:
   - Basic: []
   - OAuth2: []

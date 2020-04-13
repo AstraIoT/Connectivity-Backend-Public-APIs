@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: Geofence API (Beta)
+  version: '1.0'
+  description: 'The Geofence API can be used to subscribe to geofence events that a vehicle that is in a fleet intersect. Unless otherwise specified, all hooks will POST to the URL that you provide.'
+  contact:
+    name: Software Team
+    url: www.astraiot.co.uk
+    email: api@astraiot.co.uk
+servers:
+  - description: Production
+    url: 'https://connectivity.astraiot.co.uk/api/geofence/v1/'
+  - description: Sandbox
+    url: 'https://sandbox.connectivity.astraiot.co.uk/api/geofence/v1/'
+paths:
+  '/geofences/{geofenceId}':
+    get:
+      summary: Get a geofence
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      id:
+                        $ref: '#/components/schemas/GeofenceId'
+                  - $ref: '#/components/schemas/GeofenceArea'
+        '404':
+          description: Could not find a geofence by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      operationId: getGeofence
+      parameters: []
+      description: Get a previosuly created geofence.
+      requestBody: {}
+    put:
+      summary: Update a geofence
+      operationId: updateGeofence
+      responses:
+        '200':
+          description: OK
+      description: Modify a previously created geofence.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeofenceArea'
+    parameters:
+      - $ref: '#/components/parameters/geofenceId'
+  /hooks/:
+    parameters: []
+    post:
+      summary: Subscribe to geofence alerts
+      operationId: subscribeToGeofenceAlerts
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: "Bad Request. Check your request's syntax."
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  $ref: ../hooks/models/hookurl.v1.yaml
+        description: ''
+      tags:
+        - geofences
+        - hooks
+      callbacks:
+        GeofenceEvent:
+          '{$request.body#/url}':
+            post:
+              requestBody:
+                $ref: '#/components/schemas/GeofenceEvent'
+              responses:
+                '200':
+                  description: OK
+      description: |-
+        Subscribe to geofence alerts and get whether any of your devices have left or entered the designated areas at any time. The system will POST you at the URL you provide each time that happens.
+
+        Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the `GeofenceEvent` model in order to obtain information about the schema used for notifying your applications.
+    delete:
+      summary: Unsubscribe from geofence alerts
+      operationId: unsubscribeFromGeofenceAlerts
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: There was no hook configured.
+      requestBody: {}
+      tags:
+        - reports
+        - hooks
+      parameters: []
+      description: Unsubscribe from geofence alerts.
+  /geofences:
+    post:
+      summary: ''
+      operationId: createGeofence
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/GeofenceId'
+                required:
+                  - id
+        '400':
+          description: Bad Request. Check that you have provided a valid GeoJSON object.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeofenceAreaCreate'
+      description: Create a geofence for your devices.
+    parameters: []
+components:
+  schemas:
+    GeofenceTag:
+      type: string
+      title: GeofenceTag
+      description: A tag for geofences.
+      example: example-tag
+      minLength: 1
+      maxLength: 255
+      pattern: '^[A-Za-z0-9-_]+'
+    GeofenceArea:
+      title: GeofenceArea
+      description: Defines the geometry of a geofence. Geofence is a GeoJSON object that defines a region in space that can interact with the fleet.
+      type: object
+      x-examples: {}
+      properties:
+        name:
+          type: string
+          description: A name for this geofence.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/GeofenceTag'
+          description: 'An array of tags, please check the `GeofenceTag` model on this API for validation constraints.'
+        geoJson:
+          $ref: '#/components/schemas/GeoJson'
+    GeofenceTags:
+      type: array
+      title: GeofenceTags
+      description: An array of geofence tags.
+      uniqueItems: true
+      maxItems: 32
+      minItems: 0
+      items:
+        $ref: '#/components/schemas/GeofenceTag'
+    GeoJson:
+      title: GeoJson
+      type: object
+      description: 'A [GeoJSON](https://geojson.org) object, defined by the RFC 7946 standard. You can easily generate one with [this](geojson.io) tool.'
+    GeofenceId:
+      title: GeofenceId
+      type: string
+      description: A UUID representing a configured geofence.
+    GeofenceAreaCreate:
+      description: Defines the geometry of a geofence. Geofence is a GeoJSON object that defines a region in space that can interact with the fleet.
+      title: GeofenceAreaCreate
+      x-examples: {}
+      type: object
+      properties:
+        name:
+          type: string
+          description: A name for this geofence.
+        tags:
+          type: array
+          description: 'An array of tags, please check the `GeofenceTag` model on this API for validation constraints.'
+          items:
+            $ref: '#/components/schemas/GeofenceTag'
+        geoJson:
+          $ref: '#/components/schemas/GeoJson'
+      required:
+        - name
+        - tags
+        - geoJson
+    GeofenceEvent:
+      title: GeofenceEvent
+      type: object
+      description: A callback to your application fired every time that a geofence event occurs.
+      properties:
+        geofenceId:
+          type: string
+          description: Which geofence was involved in this event.
+        deviceId:
+          type: string
+          description: Which device caused the event to fire up.
+        type:
+          type: string
+          description: The type of event.
+          enum:
+            - enter
+            - exit
+        geofenceTags:
+          type: array
+          description: Array of tags of the involved geofence. Can be empty.
+          items:
+            type: string
+        geofenceName:
+          type: string
+          description: Name given to the involved geofence.
+      required:
+        - geofenceId
+        - deviceId
+        - type
+        - geofenceTags
+        - geofenceName
+  securitySchemes: {}
+  parameters:
+    geofenceId:
+      in: path
+      name: geofenceId
+      schema:
+        type: string
+        format: uuid
+      description: A UUID representing an already created geofence.
+      required: true
+tags:
+  - name: geofences
+  - name: hooks

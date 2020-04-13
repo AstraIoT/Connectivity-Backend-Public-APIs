@@ -26,7 +26,7 @@ paths:
       description: |-
         Subscribe to your device's reports and get their status in real-time. The system will POST you at the URL you provide every time that a new report arrives from one of your devices.
 
-        Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the raw OpenAPI definition files to obtain information about the schema used for notifying your applications.
+        Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the `DeviceReportsReceived ` model in this API to obtain information about the schema used for notifying your applications.
       requestBody:
         content:
           application/json:
@@ -41,7 +41,7 @@ paths:
           '{$request.body#/url}':
             post:
               requestBody:
-                $ref: ./models/events/devicereportsreceived.v1.yaml
+                $ref: ./models/events/devicereportreceivedevent.v1.yaml
               responses:
                 '200':
                   description: OK
@@ -82,6 +82,18 @@ paths:
               properties:
                 url:
                   $ref: ./models/hookurl.v1.yaml
+      callbacks:
+        DeviceEventReceivedEvent:
+          '{$request.body#/url}':
+            post:
+              headers:
+                X-Response-Format:
+                  $ref: ../common/
+              requestBody:
+                $ref: ./models/events/devicereportsreceived.v1.yaml
+              responses:
+                '200':
+                  description: OK
       operationId: subscribeToEvent
       tags:
         - events
