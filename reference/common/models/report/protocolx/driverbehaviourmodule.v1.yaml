@@ -1,0 +1,51 @@
+title: DriverBehaviourModule
+type: object
+description: '`DRIVER BEHAVIOUR` module. Includes information about accelerations of the device.'
+properties:
+  accelXMax:
+    type: integer
+    description: Max. acceleration in m/s^2 since last report.
+    minimum: 0
+    maximum: 2550
+    multipleOf: 10
+  accelXMin:
+    type: integer
+    description: Max. deceleration in m/s^2 since last report.
+    multipleOf: 10
+    maximum: 2550
+    minimum: 0
+  accelYMax:
+    type: integer
+    description: Max. cornering in m/s^2 since last report.
+    multipleOf: 10
+    maximum: 2550
+    minimum: 0
+  accelYMin:
+    type: integer
+    description: Max. cornering in m/s^2 since last report.
+    multipleOf: 10
+    maximum: 2550
+    minimum: 0
+  accelZMax:
+    type: integer
+    description: Max. lateral force in m/s^2 since last report.
+    multipleOf: 10
+    maximum: 2550
+    minimum: 0
+  accelZMin:
+    type: integer
+    description: Max. lateral force in m/s^2 since last report.
+    minimum: 0
+    maximum: 2550
+    multipleOf: 10
+  idleTime:
+    type: integer
+    description: Idle time for the current journey in seconds.
+required:
+  - accelXMax
+  - accelXMin
+  - accelYMax
+  - accelYMin
+  - accelZMax
+  - accelZMin
+  - idleTime

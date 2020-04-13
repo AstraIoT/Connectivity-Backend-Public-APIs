@@ -1,0 +1,3 @@
+title: ProtocolKDeviceReport
+type: object
+description: Report generated from an Astra device using the protocol K specification.

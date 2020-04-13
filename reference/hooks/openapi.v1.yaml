@@ -6,10 +6,8 @@ info:
   contact:
     name: Miguel Vera
     email: miguel@astraiot.co.uk
-  license:
-    name: MIT
 servers:
-  - url: 'https://connectivity.astraiot.co.uk:3000/hooks'
+  - url: 'https://connectivity.gps-telematics.co.uk:3000/hooks'
     description: Hooks API
 paths:
   /reports:
@@ -23,7 +21,7 @@ paths:
 
         Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the raw OpenAPI definition files to obtain information about the schema used for notifying your applications.
       security:
-        - Bearer: []
+        - ClientPassword: []
       requestBody:
         content:
           application/json:
@@ -62,7 +60,7 @@ paths:
         - reports
         - hooks
       security:
-        - Bearer: []
+        - ClientPassword: []
   '/events/{eventType}':
     post:
       summary: Subscribe to important device events
@@ -82,7 +80,7 @@ paths:
                 url:
                   $ref: ./models/hookurl.v1.yaml
       security:
-        - Bearer: []
+        - ClientPassword: []
       operationId: subscribeToEvent
       tags:
         - events
@@ -101,7 +99,7 @@ paths:
         - events
         - hooks
       security:
-        - Bearer: []
+        - ClientPassword: []
     parameters:
       - schema:
           type: string
@@ -136,7 +134,7 @@ paths:
 components:
   schemas: {}
   securitySchemes:
-    Bearer:
-      name: API Key
-      type: apiKey
-      in: query
+    ClientPassword:
+      type: http
+      scheme: Bearer
+      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.

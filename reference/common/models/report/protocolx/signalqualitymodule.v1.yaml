@@ -1,0 +1,18 @@
+title: SignalQualityModule
+type: object
+description: '`SIGNAL QUALITY` module. Includes information about the quality of the signal.'
+properties:
+  numberOfSats:
+    type: integer
+    description: Number of GPS satellites in use.
+    minimum: 0
+    maximum: 15
+    multipleOf: 1
+  gsmRssi:
+    type: integer
+    description: 'GSM signal strength, in negative dBms (from -53 to -111, the closer to zero the stronger the signal).'
+    minimum: -111
+    maximum: -53
+required:
+  - numberOfSats
+  - gsmRssi

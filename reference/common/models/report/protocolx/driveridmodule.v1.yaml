@@ -1,0 +1,19 @@
+title: DriverIdModule
+type: object
+description: '`DRIVER ID` module. Reports whenever a driver has successfully identified using the Driver ID mechanism.'
+properties:
+  driverIdSource:
+    type: string
+    description: Source of driver ID data.
+    enum:
+      - NONE
+      - IBUTTON
+      - EXTERNAL_RFID_NFC
+      - BLUETOOTH
+  driverIdSerialNumber:
+    type: string
+    description: Base64 encoded version of the Driver ID serial number.
+    format: binary
+required:
+  - driverIdSource
+  - driverIdSerialNumber

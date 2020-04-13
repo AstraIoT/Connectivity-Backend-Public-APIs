@@ -1,0 +1,30 @@
+type: object
+title: ProtocolXDeviceReport
+description: Report generated from an Astra device using the protocol X specification.
+x-examples: {}
+properties:
+  header:
+    $ref: ./report/reportheader.v1.yaml
+  modules:
+    type: array
+    description: |-
+      An array that contains all modules in their respective positions (as per the XLSX file containing all protocol X module specifications). If a module is not included in this report, the value in the position that it occupies will be `null`.
+      For example, the `DEVICE POWER` module will be in the first position of the array, the `GPS DATA` module in the second, etc.
+
+      Only the modules that appear in this API reference are currently implemented.
+    items:
+      anyOf:
+        - $ref: ./report/protocolx/devicepowermodule.v1.yaml
+        - $ref: ./report/protocolx/gpsdatamodule.v1.yaml
+        - $ref: ./report/protocolx/digitalsmodule.v1.yaml
+        - $ref: ./report/protocolx/analoguesmodule.v1.yaml
+        - $ref: ./report/protocolx/driverbehaviourmodule.v1.yaml
+        - $ref: ./report/protocolx/signalqualitymodule.v1.yaml
+        - $ref: ./report/protocolx/gsmnetworkinfomodule.v1.yaml
+        - $ref: ./report/protocolx/geofencesmodule.v1.yaml
+        - $ref: ./report/protocolx/driveridmodule.v1.yaml
+        - $ref: ./report/protocolx/gnssstopreportdatamodule.v1.yaml
+        - $ref: ./report/protocolx/simcardserialnumbermodule.v1.yaml
+required:
+  - header
+  - modules

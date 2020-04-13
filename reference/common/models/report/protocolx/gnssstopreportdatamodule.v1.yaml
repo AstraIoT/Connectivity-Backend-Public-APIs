@@ -1,0 +1,16 @@
+title: GnssStopReportDataModule
+type: object
+description: "`GNSS STOP REPORT DATA` module. Includes information about this device's cumulative data."
+properties:
+  gnssLifetimeOdometer:
+    type: integer
+    description: "This device's odometer, since first configured, and according to its GNSS positioning system. In km."
+    minimum: 0
+    maximum: 16777216
+    multipleOf: 1
+  deviceLifetimeRunningHours:
+    type: integer
+    description: 'How long has this device been powered on, accumulatively, in hours.'
+    minimum: 0
+    maximum: 65536
+    multipleOf: 1

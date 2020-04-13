@@ -1,0 +1,9 @@
+title: SimCardSerialNumberModule
+type: object
+description: '`SIM CARD SERIAL NUMBER` module. Includes information about the SIM card currently powering this device.'
+properties:
+  gsmIccid:
+    description: Integrated Circuit Card Identifier number. Can be up to 20 characters in length.
+    type: string
+required:
+  - gsmIccid

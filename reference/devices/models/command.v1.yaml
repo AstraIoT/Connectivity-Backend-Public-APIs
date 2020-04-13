@@ -1,0 +1,3 @@
+title: Command
+type: string
+description: Single command sent to an Astra device.
