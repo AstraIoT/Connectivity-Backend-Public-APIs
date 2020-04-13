@@ -3,10 +3,10 @@ tags:
   - name: commands
   - name: vehicles
 info:
-  title: Vehicles
+  title: Vehicles API
   version: '1.0'
   description: |-
-    The vehicles API is a simplified down version of the devices API. This API assumes your devices are all connected to vehicles and supporting the main automotion capabilities of the ASTRA (start/stop, immobiliser, driver ID, etc.). Although there is general documentation available for this API, it actually is a client-customized API, so feel free to make an inquiry for your own use-cases.
+    The Vehicles API is a simplified down version of the devices API. This API assumes your devices are all connected to vehicles and supporting the main automotion capabilities of the ASTRA (start/stop, immobiliser, driver ID, etc.). Although there is general documentation available for this API, it actually is a client-customized API, so feel free to make an inquiry for your own use-cases.
 
     All endpoints refer to device IDs, which are the same that you use when communicating with the devices API.
 
