@@ -2,12 +2,12 @@ title: GenericError
 type: object
 description: "Generic error message that is dispatched when things don't go well, which is never :)"
 properties:
-  error_code:
+  errorCode:
     type: string
     description: 'If the request failed because of an internal server error, this will be "server error". Otherwise, the deeper cause will be specified within this field.'
-  error_message:
+  errorMessage:
     type: string
     description: A more descriptive representation of the failure cause.
 required:
-  - error_code
-  - error_message
+  - errorCode
+  - errorMessage

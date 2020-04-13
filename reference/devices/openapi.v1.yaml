@@ -45,8 +45,6 @@ paths:
             application/json:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
-      security:
-        - ClientPassword: []
       parameters: []
       description: Returns the last known state of the device. Note that this state might not represent reality at the moment of this query. The state is sent back to the caller using the latest report received.
       operationId: getDevice
@@ -73,8 +71,6 @@ paths:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: 'Send a command to a device. This operation is synchronous: the HTTP call will return when commanda are received, processed and a response has been sent back to the server, at which time the server will send the response back to the calling client.'
-      security:
-        - ClientPassword: []
       requestBody:
         content:
           application/json:
@@ -138,8 +134,6 @@ paths:
               $ref: '#/components/parameters/X-Response-Format'
       operationId: getDeviceReports
       description: This endpoint provides a convenient way of obtaining all device reports that match a given query. Reports will be sent back in a paginated response.
-      security:
-        - ClientPassword: []
       parameters:
         - schema:
             type: string
@@ -171,10 +165,29 @@ components:
       type: string
       description: A string consisting on the firmware version of a device.
   securitySchemes:
-    ClientPassword:
+    Basic:
       type: http
-      scheme: Bearer
-      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.
+      scheme: basic
+      description: |-
+        To authenticate each and every one of the requests made to this API using this security scheme, you should provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front, like this:
+        ```
+        Authorization: Basic ${base64EncodedToken}
+        ```
+        Take into account that you are sending your API key in plain text in every request, so consider using the OAuth2 security scheme to authenticate your requests instead.
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://api.astraiot.co.uk:3000/auth/token'
+          scopes: {}
+      description: |-
+        Make a request with `Basic Access Authentication`, like is explained above, to the **Refresh URL** displayed at the bottom to obtain an authorization token.
+
+        Then, in each of the requests that you make to this API, you should provide the obtained token in the  `Authorization` header, like this:
+        ```
+        Authorization: Bearer ${token}
+        ```
+        Take into account that the token obtained through the **Token URL** has a TTL, so be sure to ensure its renewal.
   parameters:
     deviceId:
       in: path
@@ -195,3 +208,6 @@ components:
       required: true
       name: X-Response-Format
       in: header
+security:
+  - Basic: []
+  - OAuth2: []

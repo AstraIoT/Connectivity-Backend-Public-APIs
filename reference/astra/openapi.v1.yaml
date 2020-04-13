@@ -61,10 +61,31 @@ components:
       x-tags:
         - models
   securitySchemes:
-    ClientPassword:
+    Basic2:
+      $ref: ../auth/openapi.v1.yaml#components/securitySchemes/Basic
+    Basic:
       type: http
-      scheme: Basic
-      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.
+      scheme: basic
+      description: |-
+        To authenticate each and every one of the requests made to this API using this security scheme, you should provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front, like this:
+        ```
+        Authorization: Basic ${base64EncodedToken}
+        ```
+        Take into account that you are sending your API key in plain text in every request, so consider using the OAuth2 security scheme to authenticate your requests instead.
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://api.astraiot.co.uk:3000/auth/token'
+          scopes: {}
+      description: |-
+        Make a request with `Basic Access Authentication`, like is explained above, to the **Refresh URL** displayed at the bottom to obtain an authorization token.
+
+        Then, in each of the requests that you make to this API, you should provide the obtained token in the  `Authorization` header, like this:
+        ```
+        Authorization: Bearer ${token}
+        ```
+        Take into account that the token obtained through the **Token URL** has a TTL, so be sure to ensure its renewal.
 paths:
   '/devices/{deviceId}/driverId':
     post:
@@ -100,8 +121,6 @@ paths:
                   items:
                     $ref: '#/components/schemas/DriverIdConfiguration'
         description: 'You can provide a single Driver ID, in a JSON object, or multiple Driver IDs, in a JSON array.'
-      security:
-        - ClientPassword: []
       tags:
         - driver-id
     parameters:
@@ -137,8 +156,6 @@ paths:
                 $ref: ../common/models/error/genericerror.v1.yaml
       operationId: getAllDriverIds
       description: Get the list of both approved and declined Driver IDs for this device.
-      security:
-        - ClientPassword: []
     delete:
       summary: Delete Driver ID(s)
       operationId: deleteDriverIds
@@ -161,8 +178,6 @@ paths:
         Delete one or more Driver IDs; the backend will not approve nor decline the provided Driver IDs any longer when receiving a request from the device.
 
         If the HTTP request syntax is OK but any or all of the provided Driver IDs are not found in the backend for this device, the HTTP request will still run happily and return a 200 HTTP code.
-      security:
-        - ClientPassword: []
       requestBody:
         content:
           application/json:
@@ -176,3 +191,6 @@ paths:
         description: 'You can provide a single Driver ID, in a JSON object, or multiple Driver IDs, in a JSON array.'
       tags:
         - driver-id
+security:
+  - Basic: []
+  - OAuth2: []

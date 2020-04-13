@@ -45,8 +45,6 @@ paths:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: 'Gets the latest known position and GPS data of the vehicle, as well as other relevant information.'
-      security:
-        - ClientPassword: []
       operationId: getVehiclePosition
   '/{deviceId}/start':
     post:
@@ -68,8 +66,6 @@ paths:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: 'Start a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
       operationId: startVehicle
-      security:
-        - ClientPassword: []
       requestBody: {}
       tags:
         - commands
@@ -100,8 +96,6 @@ paths:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: 'Stop a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
-      security:
-        - ClientPassword: []
       requestBody: {}
       tags:
         - commands
@@ -134,8 +128,6 @@ paths:
               schema:
                 $ref: ./models/vehiclegpsinformation.v1.yaml
       description: 'Actively polls the device for the current GPS position. This is a synchronous call, so if your device is not online it will timeout.'
-      security:
-        - ClientPassword: []
       requestBody: {}
       tags:
         - commands
@@ -144,7 +136,29 @@ paths:
 components:
   schemas: {}
   securitySchemes:
-    ClientPassword:
+    Basic:
       type: http
-      scheme: Bearer
-      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.
+      scheme: basic
+      description: |-
+        To authenticate each and every one of the requests made to this API using this security scheme, you should provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front, like this:
+        ```
+        Authorization: Basic ${base64EncodedToken}
+        ```
+        Take into account that you are sending your API key in plain text in every request, so consider using the OAuth2 security scheme to authenticate your requests instead.
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://api.astraiot.co.uk:3000/auth/token'
+          scopes: {}
+      description: |-
+        Make a request with `Basic Access Authentication`, like is explained above, to the **Refresh URL** displayed at the bottom to obtain an authorization token.
+
+        Then, in each of the requests that you make to this API, you should provide the obtained token in the  `Authorization` header, like this:
+        ```
+        Authorization: Bearer ${token}
+        ```
+        Take into account that the token obtained through the **Token URL** has a TTL, so be sure to ensure its renewal.
+security:
+  - Basic: []
+  - OAuth2: []

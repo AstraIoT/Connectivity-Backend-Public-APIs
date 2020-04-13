@@ -24,8 +24,6 @@ paths:
         Subscribe to your device's reports and get their status in real-time. The system will POST you at the URL you provide every time that a new report arrives from one of your devices.
 
         Please take notice that a callback is defined for this hook in this same `.yml` file, even though you are not able to see it in the browser. Please inspect the raw OpenAPI definition files to obtain information about the schema used for notifying your applications.
-      security:
-        - ClientPassword: []
       requestBody:
         content:
           application/json:
@@ -63,8 +61,6 @@ paths:
       tags:
         - reports
         - hooks
-      security:
-        - ClientPassword: []
   '/events/{eventType}':
     post:
       summary: Subscribe to important device events
@@ -83,8 +79,6 @@ paths:
               properties:
                 url:
                   $ref: ./models/hookurl.v1.yaml
-      security:
-        - ClientPassword: []
       operationId: subscribeToEvent
       tags:
         - events
@@ -97,13 +91,11 @@ paths:
           description: OK
         '204':
           description: There was no hook configured.
-      description: Unsubscribe to a previously subscribed event.
+      description: Unsubscribe from a previously subscribed event.
       requestBody: {}
       tags:
         - events
         - hooks
-      security:
-        - ClientPassword: []
     parameters:
       - schema:
           type: string
@@ -138,7 +130,29 @@ paths:
 components:
   schemas: {}
   securitySchemes:
-    ClientPassword:
+    Basic:
       type: http
-      scheme: Bearer
-      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.
+      scheme: basic
+      description: |-
+        To authenticate each and every one of the requests made to this API using this security scheme, you should provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front, like this:
+        ```
+        Authorization: Basic ${base64EncodedToken}
+        ```
+        Take into account that you are sending your API key in plain text in every request, so consider using the OAuth2 security scheme to authenticate your requests instead.
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://api.astraiot.co.uk:3000/auth/token'
+          scopes: {}
+      description: |-
+        Make a request with `Basic Access Authentication`, like is explained above, to the **Refresh URL** displayed at the bottom to obtain an authorization token.
+
+        Then, in each of the requests that you make to this API, you should provide the obtained token in the  `Authorization` header, like this:
+        ```
+        Authorization: Bearer ${token}
+        ```
+        Take into account that the token obtained through the **Token URL** has a TTL, so be sure to ensure its renewal.
+security:
+  - Basic: []
+  - OAuth2: []

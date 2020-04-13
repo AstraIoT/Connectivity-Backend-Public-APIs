@@ -26,6 +26,10 @@ paths:
         '401':
           description: Wrong ClientId or ApiKey.
           headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
       description: This endpoint provides an OAuth2 token to use for authentication of subsequent requests to this backend.
       security:
         - Basic Access Authentication: []
@@ -36,7 +40,7 @@ paths:
 components:
   schemas: {}
   securitySchemes:
-    Basic Access Authentication:
+    Basic:
       type: http
       scheme: Basic
       description: 'Provide a "ClientId:ApiKey" string encoded in Base64 and add the string "Basic " to the front.'
