@@ -1,4 +1,7 @@
 openapi: 3.0.0
+tags:
+  - name: commands
+  - name: vehicles
 info:
   title: Vehicles
   version: '1.0'
@@ -44,9 +47,7 @@ paths:
       description: 'Gets the latest known position and GPS data of the vehicle, as well as other relevant information.'
       security:
         - ClientPassword: []
-      requestBody: {}
       operationId: getVehiclePosition
-      parameters: []
   '/{deviceId}/start':
     post:
       summary: Start a vehicle

@@ -1,7 +1,6 @@
 type: object
 title: ProtocolXDeviceReport
 description: Report generated from an Astra device using the protocol X specification.
-x-examples: {}
 properties:
   header:
     $ref: ./report/reportheader.v1.yaml

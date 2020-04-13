@@ -1,4 +1,8 @@
 openapi: 3.0.0
+tags:
+  - name: reports
+  - name: hooks
+  - name: events
 info:
   title: Hooks
   version: '1.0'
@@ -36,7 +40,7 @@ paths:
           '{$request.body#/url}':
             post:
               requestBody:
-                $ref: ./models/events/devicereportreceived.v1.yaml
+                $ref: ./models/events/devicereportsreceived.v1.yaml
               responses:
                 '200':
                   description: OK

@@ -1,5 +1,0 @@
-title: PaginatedResponse
-type: object
-properties:
-  id:
-    type: string

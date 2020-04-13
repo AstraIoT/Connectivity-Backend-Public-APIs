@@ -1,4 +1,9 @@
 openapi: 3.0.0
+tags:
+  - name: devices
+    description: Operations related with particular Astra devices.
+  - name: commands
+    description: Operations related with the command-response model of an Astra device.
 info:
   title: Devices
   version: '1.0'
@@ -20,6 +25,9 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            X-Response-Format:
+              $ref: '#/components/parameters/X-Response-Format'
           content:
             application/json:
               schema:
@@ -27,10 +35,6 @@ paths:
                   - $ref: ../common/models/protocolxdevicereport.v1.yaml
                   - $ref: ../common/models/protocolkdevicereport.v1.yaml
                   - $ref: ../common/models/protocolmdevicereport.v1.yaml
-              examples: {}
-          headers:
-            X-Response-Format:
-              $ref: '#/components/parameters/X-Response-Format'
         '204':
           description: The device has not connected nor sent any data to the backend yet.
         '404':
@@ -62,12 +66,10 @@ paths:
           description: Could not find a device by the provided ID.
         '408':
           description: 'Request timeout, probably because the Astra device was unavailable at the time.'
-          headers: {}
           content:
             application/json:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
-              examples: {}
       description: 'Send a command to a device. This operation is synchronous: the HTTP call will return when commanda are received, processed and a response has been sent back to the server, at which time the server will send the response back to the calling client.'
       security:
         - ClientPassword: []
@@ -132,7 +134,6 @@ paths:
               $ref: '#/components/parameters/X-Response-Format'
       operationId: getDeviceReports
       description: This endpoint provides a convenient way of obtaining all device reports that match a given query. Reports will be sent back in a paginated response
-      requestBody: {}
       security:
         - ClientPassword: []
       parameters:

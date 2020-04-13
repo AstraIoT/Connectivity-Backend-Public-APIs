@@ -1,4 +1,7 @@
 openapi: 3.0.0
+tags:
+  - name: auth
+    description: Authentication and authorization related operations.
 info:
   title: Auth
   version: '1.0'
@@ -26,7 +29,6 @@ paths:
       description: This endpoint provides an OAuth2 token to use for authentication of subsequent requests to this backend.
       security:
         - Basic Access Authentication: []
-      requestBody: {}
       operationId: getAuthToken
       tags:
         - auth
