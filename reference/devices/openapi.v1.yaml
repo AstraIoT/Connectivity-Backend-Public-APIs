@@ -159,14 +159,20 @@ components:
       title: DeviceId
       type: string
       description: A UUID that identifies a particular IoT device.
+      x-tags:
+        - models
     Imei:
       title: Imei
       type: string
       description: The IMEI of the radio on a device.
+      x-tags:
+        - models
     FirmwareVersion:
       title: FirmwareVersion
       type: string
       description: A string consisting on the firmware version of a device.
+      x-tags:
+        - models
   securitySchemes:
     Basic:
       type: http
