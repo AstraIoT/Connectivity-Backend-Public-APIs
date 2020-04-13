@@ -1,4 +1,0 @@
-type: string
-title: HookUrl
-format: hostname
-description: A URL that you want this hook to POST to.
