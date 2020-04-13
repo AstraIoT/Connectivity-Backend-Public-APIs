@@ -121,7 +121,9 @@ paths:
       - $ref: '#/components/parameters/deviceId'
     get:
       summary: Get device reports
-      tags: []
+      tags:
+        - reports
+        - devices
       responses:
         '200':
           description: OK
