@@ -12,7 +12,7 @@ info:
     name: Miguel Vera
     email: miguel@astraiot.co.uk
 servers:
-  - url: 'https://connectivity.gps-telematics.co.uk:3000/vehicles'
+  - url: 'https://api.astraiot.co.uk:3000/vehicles'
     description: Vehicles API
 paths:
   '/{deviceId}':
@@ -43,7 +43,7 @@ paths:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: 'Gets the latest known position and GPS data of the vehicle, as well as other relevant information.'
       security:
-        - ClientPassword: []
+        - Bearer: []
       requestBody: {}
       operationId: getVehiclePosition
       parameters: []
@@ -53,6 +53,18 @@ paths:
       responses:
         '200':
           description: Vehicle performed the requested command successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  command:
+                    type: string
+                    description: Command to send vehicles
+                  retry:
+                    type: integer
+                required:
+                  - command
         '404':
           description: Could not find a vehicle by the provided ID.
           content:
@@ -68,7 +80,7 @@ paths:
       description: 'Start a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
       operationId: startVehicle
       security:
-        - ClientPassword: []
+        - Bearer: []
       requestBody: {}
       tags:
         - commands
@@ -100,7 +112,7 @@ paths:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: 'Stop a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
       security:
-        - ClientPassword: []
+        - Bearer: []
       requestBody: {}
       tags:
         - commands
@@ -124,7 +136,7 @@ paths:
           type: string
         required: true
     get:
-      summary: "Poll a vehicle's GPS position"
+      summary: "Poll the last vehicle's GPS position"
       responses:
         '200':
           description: OK
@@ -132,9 +144,9 @@ paths:
             application/json:
               schema:
                 $ref: ./models/vehiclegpsinformation.v1.yaml
-      description: 'Actively polls the device for the current GPS position. This is a synchronous call, so if your device is not online it will timeout.'
+      description: 'Actively polls the device for the current STATUS position. This is a synchronous call, so if your device is not online it will timeout.'
       security:
-        - ClientPassword: []
+        - Bearer: []
       requestBody: {}
       tags:
         - commands
@@ -143,7 +155,7 @@ paths:
 components:
   schemas: {}
   securitySchemes:
-    ClientPassword:
-      type: http
-      scheme: Bearer
-      description: Use the authentication bearer token obtained from the `/auth/token` endpoint.
+    Bearer:
+      name: API Key
+      type: apiKey
+      in: header

@@ -1,0 +1,37 @@
+title: GeofenceArea
+type: object
+description: Define a geofence geometry. Geofence is a geoJson object that define a region in the space that can interact with the fleet.
+properties:
+  id:
+    type: string
+    description: GUID ID to identify the object
+  type:
+    type: string
+  geometry:
+    type: object
+    required:
+      - type
+      - coordinates
+    properties:
+      type:
+        type: string
+        enum:
+          - Polygon
+          - Point
+          - MultiPolygon
+          - MultiPoint
+        example: Point
+      coordinates:
+        type: array
+        items: {}
+  properties:
+    type: object
+    properties:
+      name:
+        type: string
+      tags:
+        type: string
+required:
+  - id
+  - type
+  - geometry
