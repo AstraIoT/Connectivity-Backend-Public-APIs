@@ -1,0 +1,5 @@
+title: reportreasonflags
+type: array
+description: 'Array of [ReportReason](#/common/models/report/reportreason.v1.yaml) objects'
+items:
+  $ref: ./reportreason.v1.yaml

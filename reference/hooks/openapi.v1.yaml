@@ -104,30 +104,30 @@ paths:
       - schema:
           type: string
           enum:
-            - timed interval elapsed
-            - distance travelled exceeded
-            - position on demand
+            - timed-interval-elapsed
+            - distance-travelled-exceeded
+            - position-on-demand
             - geofence
-            - panic switch activated
-            - external io
-            - journey start
-            - journey stop
-            - heading change
-            - low battery
-            - external power
-            - idling start
-            - idling end
-            - idling ongoing
-            - power on
-            - speed overthreshold
-            - towing alarm
-            - unauthorised driver alarm
-            - collision alarm
-            - accel threshold maximum
-            - cornering threshold maximum
-            - decel threshold maximum
-            - gps reacquired
-            - vehicle roll
+            - panic-switch-activated
+            - external-io
+            - journey-start
+            - journey-stop
+            - heading-change
+            - low-battery
+            - external-power
+            - idling-start
+            - idling-end
+            - idling-ongoing
+            - power-on
+            - speed-overthreshold
+            - towing-alarm
+            - unauthorised-driver-alarm
+            - collision-alarm
+            - accel-threshold-maximum
+            - cornering-threshold-maximum
+            - decel-threshold-maximum
+            - gps-reacquired
+            - vehicle-roll
         name: eventType
         in: path
         required: true

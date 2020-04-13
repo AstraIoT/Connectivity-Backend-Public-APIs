@@ -20,6 +20,32 @@ properties:
     description: GTM timestamp of the event/report.
   reasonFlags:
     type: array
+    description: 'Array of report reason strings. Please check '
+    enum:
+      - timed-interval-elapsed
+      - distance-travelled-exceeded
+      - position-on-demand
+      - geofence
+      - panic-switch-activated
+      - external-io
+      - journey-start
+      - journey-stop
+      - heading-change
+      - low-battery
+      - external-power
+      - idling-start
+      - idling-end
+      - idling-ongoing
+      - power-on
+      - speed-overthreshold
+      - towing-alarm
+      - unauthorised-driver-alarm
+      - collision-alarm
+      - accel-threshold-maximum
+      - cornering-threshold-maximum
+      - decel-threshold-maximum
+      - gps-reacquired
+      - vehicle-roll
     items:
       type: string
   statusFlags:

@@ -105,10 +105,9 @@ paths:
           description: 'The device ID provided in the previous response. If none is given, it will start looking from the beggining of the list.'
         - schema:
             type: integer
-            maxLength: 0
             maximum: 50
             minimum: 1
-            multipleOf: 0
+            multipleOf: 1
             default: '20'
           in: query
           name: limit
@@ -136,12 +135,36 @@ paths:
       requestBody: {}
       security:
         - ClientPassword: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: start
+          description: 'Filter by a beginning timestamp. If no `end` timestamp is sent, the response will contain the reports of a range of 31 days after this start date.'
+        - schema:
+            type: string
+          in: query
+          name: end
+          description: "Filter by a termination timestamp. If no `start` timestamp is sent, the response will contain the \nreports of a range of 31 days before this end date."
+        - schema:
+            type: string
+          in: query
+          name: reportReason
+          description: Filter reports by the indicated report reason. The response will only contain reports that were triggered because of such reason.
 components:
   schemas:
     DeviceId:
       title: DeviceId
       type: string
       description: A UUID that identifies a particular IoT device.
+    Imei:
+      title: Imei
+      type: string
+      description: The IMEI of the radio on a device.
+    FirmwareVersion:
+      title: FirmwareVersion
+      type: string
+      description: A string consisting on the firmware version of a device.
   securitySchemes:
     ClientPassword:
       type: http

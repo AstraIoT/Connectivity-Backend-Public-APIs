@@ -1,4 +1,7 @@
 openapi: 3.0.0
+tags:
+  - name: driver-id
+    description: Driver ID related functionality.
 info:
   title: Astra
   version: '1.0'
@@ -18,9 +21,8 @@ components:
       description: A Driver ID.
       properties:
         iButtonFamilyCode:
-          type:
-            - integer
-            - 'null'
+          type: integer
+          nullable: true
           description: 'iButton family code, if the source is an iButton. If not, this will be `null`.'
           minimum: 1
           maximum: 255
@@ -97,10 +99,6 @@ paths:
                   description: Array of multiple Driver ID configuration requests.
                   items:
                     $ref: '#/components/schemas/DriverIdConfiguration'
-          application/xml:
-            schema:
-              type: object
-              properties: {}
         description: 'You can provide a single Driver ID, in a JSON object, or multiple Driver IDs, in a JSON array.'
       security:
         - ClientPassword: []

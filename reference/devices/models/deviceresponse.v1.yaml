@@ -5,12 +5,13 @@ properties:
   deviceId:
     $ref: '../openapi.v1.yaml#/components/schemas/DeviceId'
   imei:
-    type: string
+    $ref: '../openapi.v1.yaml#/components/schemas/Imei'
   firmwareVersion:
-    type: string
+    $ref: '../openapi.v1.yaml#/components/schemas/FirmwareVersion'
   lastSeen:
     type: string
     format: date-time
+    description: Timestamp of the last time this device was connected to the backend.
 required:
   - deviceId
   - imei
