@@ -58,7 +58,7 @@ components:
           tokenUrl: 'https://connectivity.astraiot.co.uk:443/api/auth/v1/token'
           scopes: {}
       description: |-
-        Make a request with `Basic Access Authentication`, like is explained above, to the **Refresh URL** displayed at the bottom to obtain an authorization token.
+        Make a request with `Basic Access Authentication`, like is explained above, to the **Token URL** displayed at the bottom to obtain an authorization token.
 
         Then, in each of the requests that you make to this API, you should provide the obtained token in the  `Authorization` header, like this:
         ```
