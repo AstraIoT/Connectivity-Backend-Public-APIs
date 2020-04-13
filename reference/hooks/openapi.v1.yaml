@@ -4,15 +4,18 @@ tags:
   - name: hooks
   - name: events
 info:
-  title: Hooks
+  title: Hooks API
   version: '1.0'
-  description: 'The hooks API can be used to subscribe to relevant events that a device might trigger in its usage. Unless otherwise specified, all hooks will POST to the URL that you provide.'
+  description: 'The Hooks API can be used to subscribe to relevant events that a device might trigger in its usage. Unless otherwise specified, all hooks will POST to the URL that you provide.'
   contact:
     name: Miguel Vera
     email: miguel@astraiot.co.uk
+    url: 'https://www.linkedin.com/in/mikiloz'
 servers:
   - url: 'https://connectivity.astraiot.co.uk:443/api/hooks/v1'
-    description: Hooks API
+    description: Production
+  - url: 'https://sandbox.connectivity.astraiot.co.uk:443/api/hooks/v1'
+    description: Sandbox
 paths:
   /reports:
     post:

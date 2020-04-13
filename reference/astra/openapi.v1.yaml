@@ -3,7 +3,7 @@ tags:
   - name: driver-id
     description: Driver ID related functionality.
 info:
-  title: Astra
+  title: Astra API
   version: '1.0'
   description: The Astra API provides Astra-specific functions.
   contact:
@@ -12,7 +12,9 @@ info:
     url: 'https://www.linkedin.com/in/mikiloz'
 servers:
   - url: 'https://connectivity.astraiot.co.uk:443/api/astra/v1'
-    description: Astra
+    description: Production
+  - url: 'https://sandbox.connectivity.astraiot.co.uk:443/api/astra/v1'
+    description: Sandbox
 components:
   schemas:
     DriverId:
@@ -61,8 +63,6 @@ components:
       x-tags:
         - models
   securitySchemes:
-    Basic2:
-      $ref: ../auth/openapi.v1.yaml#components/securitySchemes/Basic
     Basic:
       type: http
       scheme: basic
