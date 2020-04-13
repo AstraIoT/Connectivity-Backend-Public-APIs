@@ -1,5 +1,7 @@
 openapi: 3.0.0
 tags:
+  - name: reports
+    description: Operations related with a particular Astra device's reports.
   - name: devices
     description: Operations related with particular Astra devices.
   - name: commands
@@ -135,7 +137,7 @@ paths:
             X-Response-Format:
               $ref: '#/components/parameters/X-Response-Format'
       operationId: getDeviceReports
-      description: This endpoint provides a convenient way of obtaining all device reports that match a given query. Reports will be sent back in a paginated response
+      description: This endpoint provides a convenient way of obtaining all device reports that match a given query. Reports will be sent back in a paginated response.
       security:
         - ClientPassword: []
       parameters:

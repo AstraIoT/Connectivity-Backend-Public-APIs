@@ -129,6 +129,12 @@ paths:
                   $ref: '#/components/schemas/DriverIdConfiguration'
         '204':
           description: No Driver IDs added for this device yet.
+        '404':
+          description: Could not find a device by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
       operationId: getAllDriverIds
       description: Get the list of both approved and declined Driver IDs for this device.
       security:
@@ -139,8 +145,18 @@ paths:
       responses:
         '200':
           description: OK
+        '400':
+          description: Bad Request. Check that you have provided addecuate Driver ID(s).
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
         '404':
           description: Could not find a device by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
       description: |-
         Delete one or more Driver IDs; the backend will not approve nor decline the provided Driver IDs any longer when receiving a request from the device.
 
