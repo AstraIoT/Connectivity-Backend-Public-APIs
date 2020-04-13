@@ -55,7 +55,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: 'https://api.astraiot.co.uk:3000/auth/token'
+          tokenUrl: 'https://connectivity.astraiot.co.uk:443/api/auth/v1/token'
           scopes: {}
       description: |-
         Make a request with `Basic Access Authentication`, like is explained above, to the **Refresh URL** displayed at the bottom to obtain an authorization token.
