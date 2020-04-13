@@ -15,7 +15,7 @@ info:
     name: Miguel Vera
     email: miguel@astraiot.co.uk
 servers:
-  - url: 'https://connectivity.gps-telematics.co.uk:3000/vehicles'
+  - url: 'https://connectivity.astraiot.co.uk:443/api/vehicles/v1'
     description: Vehicles API
 paths:
   '/{deviceId}':

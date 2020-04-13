@@ -11,7 +11,7 @@ info:
     email: miguel@astraiot.co.uk
     url: 'https://www.linkedin.com/in/mikiloz'
 servers:
-  - url: 'https://connectivity.gps-telematics.co.uk:3000/astra'
+  - url: 'https://connectivity.astraiot.co.uk:443/api/astra/v1'
     description: Astra
 components:
   schemas:
