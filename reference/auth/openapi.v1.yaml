@@ -34,7 +34,7 @@ paths:
                 $ref: ../common/models/error/genericerror.v1.yaml
       description: This endpoint provides an OAuth2 token to use for authentication of subsequent requests to this backend.
       security:
-        - Basic Access Authentication: []
+        - Basic: []
       operationId: getAuthToken
       tags:
         - auth

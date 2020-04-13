@@ -67,6 +67,10 @@ paths:
                   $ref: ./models/commandresponse.v1.yaml
         '404':
           description: Could not find a device by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
         '408':
           description: 'Request timeout, probably because the Astra device was unavailable at the time.'
           content:
@@ -127,7 +131,7 @@ paths:
         - devices
       responses:
         '200':
-          description: OK
+          description: "OK. If the array is empty, it's because there are no matching reports for the given query."
           content:
             application/json:
               schema:
@@ -135,6 +139,14 @@ paths:
           headers:
             X-Response-Format:
               $ref: '#/components/parameters/X-Response-Format'
+        '204':
+          description: There are no reports because the device has not connected nor sent any data to the backend yet.
+        '404':
+          description: Could not find a device by the provided ID.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
       operationId: getDeviceReports
       description: This endpoint provides a convenient way of obtaining all device reports that match a given query. Reports will be sent back in a paginated response.
       parameters:
