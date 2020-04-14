@@ -2,7 +2,10 @@ openapi: 3.0.0
 info:
   title: Geofence API (Beta)
   version: '1.0'
-  description: 'The Geofence API can be used to subscribe to geofence events that a vehicle that is in a fleet intersect. Unless otherwise specified, all hooks will POST to the URL that you provide.'
+  description: |-
+    The Geofence API can be used to subscribe to geofence events that a vehicle that is in a fleet intersect. Unless otherwise specified, all hooks will POST to the URL that you provide.
+
+    This API is still in the design phase, so expect changes.
   contact:
     name: Software Team
     url: www.astraiot.co.uk
@@ -15,7 +18,7 @@ servers:
 paths:
   '/geofences/{geofenceId}':
     get:
-      summary: Get a geofence
+      summary: Retrieve a geofence
       tags:
         - geofences
       responses:
@@ -29,6 +32,8 @@ paths:
                     properties:
                       id:
                         $ref: '#/components/schemas/GeofenceId'
+                    required:
+                      - id
                   - $ref: '#/components/schemas/GeofenceArea'
         '404':
           description: Could not find a geofence by the provided ID.
@@ -38,7 +43,7 @@ paths:
                 $ref: ../common/models/error/genericerror.v1.yaml
       operationId: getGeofence
       parameters: []
-      description: Get a previosuly created geofence.
+      description: Retrieve a previosuly created geofence.
       requestBody: {}
     put:
       summary: Update a geofence
@@ -78,6 +83,8 @@ paths:
               properties:
                 url:
                   $ref: ../hooks/models/hookurl.v1.yaml
+              required:
+                - url
         description: ''
       tags:
         - hooks
@@ -135,7 +142,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GeofenceAreaCreate'
+              $ref: '#/components/schemas/GeofenceArea'
       description: Create a geofence for your devices.
       tags:
         - geofences
@@ -157,36 +164,8 @@ components:
       description: Defines the geometry of a geofence. Geofence is a GeoJSON object that defines a region in space that can interact with the fleet.
       type: object
       x-examples: {}
-      properties:
-        name:
-          type: string
-          description: A name for this geofence.
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/GeofenceTag'
-          description: 'An array of tags, please check the `GeofenceTag` model on this API for validation constraints.'
-        geoJson:
-          $ref: '#/components/schemas/GeoJson'
       x-tags:
         - models
-    GeoJson:
-      title: GeoJson
-      type: object
-      description: 'A [GeoJSON](https://geojson.org) object, defined by the RFC 7946 standard. You can easily generate one with [this](geojson.io) tool.'
-      x-tags:
-        - models
-    GeofenceId:
-      title: GeofenceId
-      type: string
-      description: A UUID representing a configured geofence.
-      x-tags:
-        - models
-    GeofenceAreaCreate:
-      description: Defines the geometry of a geofence. Geofence is a GeoJSON object that defines a region in space that can interact with the fleet.
-      title: GeofenceAreaCreate
-      x-examples: {}
-      type: object
       properties:
         name:
           type: string
@@ -202,6 +181,16 @@ components:
         - name
         - tags
         - geoJson
+    GeoJson:
+      title: GeoJson
+      type: object
+      description: 'A [GeoJSON](https://geojson.org) object, defined by the RFC 7946 standard. You can easily generate one with [this](geojson.io) tool.'
+      x-tags:
+        - models
+    GeofenceId:
+      title: GeofenceId
+      type: string
+      description: A UUID representing a configured geofence.
       x-tags:
         - models
     GeofenceEvent:

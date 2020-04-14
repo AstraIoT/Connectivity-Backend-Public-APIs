@@ -189,6 +189,8 @@ paths:
               properties:
                 url:
                   $ref: ../common/models/hooks/hookurl.v1.yaml
+              required:
+                - url
       callbacks:
         DeviceEventReceivedEvent:
           '{$request.body#/url}':
@@ -273,6 +275,8 @@ paths:
               properties:
                 url:
                   $ref: ../common/models/hooks/hookurl.v1.yaml
+              required:
+                - url
         description: ''
       callbacks:
         DeviceReportReceivedEvent:
@@ -305,9 +309,10 @@ paths:
 components:
   schemas:
     DeviceId:
-      title: DeviceId
       type: string
+      title: DeviceId
       description: A UUID that identifies a particular IoT device.
+      format: uuid
       x-tags:
         - models
     Imei:
@@ -360,6 +365,8 @@ components:
         Callback that contains one or multiple reports that the device has sent to the backend.
 
         Also note that a response header `X-Response-Format` will be sent along this callback that will indicate the response format of the reports contained in the array. Check other endpoints in this API that also contain such header for more information.
+      x-tags:
+        - hook-callbacks
       properties:
         deviceId:
           $ref: '#/components/schemas/DeviceId'
@@ -370,8 +377,9 @@ components:
               - $ref: ../common/models/protocolxdevicereport.v1.yaml
               - $ref: ../common/models/protocolkdevicereport.v1.yaml
               - $ref: ../common/models/protocolmdevicereport.v1.yaml
-      x-tags:
-        - hook-callbacks
+      required:
+        - deviceId
+        - reports
     DeviceEventReceivedEvent:
       title: DeviceEventReceivedEvent
       type: object
@@ -379,6 +387,8 @@ components:
         Callback that contains information about an event that just took place for a particular device.
 
         Also note that a response header `X-Response-Format` will be sent along this callback that will indicate the response format of the report contained in this callback. Check other endpoints in this API that also contain such header for more information.
+      x-tags:
+        - hook-callbacks
       properties:
         deviceId:
           $ref: '#/components/schemas/DeviceId'
@@ -389,8 +399,9 @@ components:
             - $ref: ../common/models/protocolxdevicereport.v1.yaml
             - $ref: ../common/models/protocolkdevicereport.v1.yaml
             - $ref: ../common/models/protocolmdevicereport.v1.yaml
-      x-tags:
-        - hook-callbacks
+      required:
+        - deviceId
+        - eventType
   parameters:
     deviceId:
       in: path

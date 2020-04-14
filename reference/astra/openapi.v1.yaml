@@ -53,6 +53,8 @@ components:
       type: object
       title: DriverIdStatus
       description: Approval status of a Driver ID.
+      x-tags:
+        - models
       properties:
         status:
           type: string
@@ -60,8 +62,8 @@ components:
           enum:
             - APPROVED
             - DECLINED
-      x-tags:
-        - models
+      required:
+        - status
   securitySchemes:
     Basic:
       type: http

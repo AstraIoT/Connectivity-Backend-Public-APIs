@@ -2,15 +2,14 @@ openapi: 3.0.0
 tags:
   - name: commands
   - name: vehicles
+  - name: status
 info:
   title: Vehicles API
   version: '1.0'
   description: |-
     The Vehicles API is a simplified down version of the devices API. This API assumes your devices are all connected to vehicles and supporting the main automotion capabilities of the ASTRA (start/stop, immobiliser, driver ID, etc.). Although there is general documentation available for this API, it actually is a client-customized API, so feel free to make an inquiry for your own use-cases.
 
-    All endpoints refer to device IDs, which are the same that you use when communicating with the devices API.
-
-    This API is a WIP and we're adding more and more commands and functionalities each day.
+    All endpoints refer to vehicle IDs, which have 1 to 1 mappings to device IDs.
   contact:
     name: Miguel Vera
     email: miguel@astraiot.co.uk
@@ -21,40 +20,46 @@ servers:
   - url: 'https://sandbox.connectivity.astraiot.co.uk:443/api/vehicles/v1'
     description: Sandbox
 paths:
-  '/{deviceId}':
+  '/{vehicleId}/status':
     parameters:
-      - type: string
-        name: deviceId
-        in: path
-        description: A UUID that represents a device.
-        schema:
-          type: string
-        required: true
+      - $ref: '#/components/parameters/vehicleId'
     get:
-      summary: "Obtain vehicle's last known information"
+      summary: Retrieve vehicle status
       tags:
-        - vehicles
+        - status
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: ./models/vehiclegpsinformation.v1.yaml
+                $ref: '#/components/schemas/VehicleStatus'
         '404':
           description: Could not find a vehicle by the provided ID.
           content:
             application/json:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
-      description: 'Gets the latest known position and GPS data of the vehicle, as well as other relevant information.'
-      operationId: getVehiclePosition
-  '/{deviceId}/start':
+      operationId: getVehicleStatus
+      description: |-
+        Retrieves the latest status of a vehicle. Note that this information might not be real-time, since it's is comprised by the last report sent to the backend by the device of this vehicle.
+
+        > The response of this endpoint is fully customizable to your needs, so feel free to ask for more data if needed and we shall agree on a response format.
+  '/{vehicleId}/command':
+    parameters:
+      - $ref: '#/components/parameters/vehicleId'
     post:
-      summary: Start a vehicle
+      summary: Send a command to a vehicle
+      operationId: sendCommandToVehicle
       responses:
         '200':
-          description: Vehicle performed the requested command successfully.
+          description: 'OK, the command was executed successfully.'
+        '400':
+          description: Bad Request. Check that you have provided a valid command.
+          content:
+            application/json:
+              schema:
+                $ref: ../common/models/error/genericerror.v1.yaml
         '404':
           description: Could not find a vehicle by the provided ID.
           content:
@@ -62,82 +67,111 @@ paths:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
         '408':
-          description: 'Request timeout, probably because the Astra device was unavailable at the time.'
+          description: 'Request timeout, probably because the device on this vehicle was unavailable at the time.'
           content:
             application/json:
               schema:
                 $ref: ../common/models/error/genericerror.v1.yaml
-      description: 'Start a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
-      operationId: startVehicle
-      requestBody: {}
+      description: |-
+        Send a simple command to a vehicle. You might not want to deal with the complexity that comes with the full-fledged Devices API, and this endpoint acts as a simplified version of it.
+
+        > The commands showcased in this endpoint are the generic ones, we can add more commands to suit your needs.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleCommand'
       tags:
         - commands
-        - vehicles
-    parameters:
-      - schema:
-          type: string
-        name: deviceId
-        in: path
-        required: true
-        description: A UUID that represents a device.
-  '/{deviceId}/stop':
-    post:
-      summary: Stop a vehicle
-      responses:
-        '200':
-          description: Vehicle performed the requested command successfully.
-        '404':
-          description: Could not find a device by the provided ID.
-          content:
-            application/json:
-              schema:
-                $ref: ../common/models/error/genericerror.v1.yaml
-        '408':
-          description: 'Request timeout, probably because the Astra device was unavailable at the time.'
-          content:
-            application/json:
-              schema:
-                $ref: ../common/models/error/genericerror.v1.yaml
-      description: 'Stop a vehicle. This is a synchronous call, so if your device is not online it will timeout.'
-      requestBody: {}
-      tags:
-        - commands
-        - vehicles
-      operationId: stopVehicle
-    parameters:
-      - type: string
-        name: deviceId
-        in: path
-        required: true
-        description: A UUID that represents a device.
-        schema:
-          type: string
-  '/{deviceId}/gps':
-    parameters:
-      - type: string
-        name: deviceId
-        in: path
-        description: A UUID that represents a device.
-        schema:
-          type: string
-        required: true
-    get:
-      summary: "Poll a vehicle's GPS position"
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: ./models/vehiclegpsinformation.v1.yaml
-      description: 'Actively polls the device for the current GPS position. This is a synchronous call, so if your device is not online it will timeout.'
-      requestBody: {}
-      tags:
-        - commands
-        - vehicles
-      operationId: pollVehicleGps
 components:
-  schemas: {}
+  schemas:
+    VehicleStatus:
+      title: VehicleStatus
+      type: object
+      description: Status report of a vehicle.
+      x-tags:
+        - models
+      properties:
+        vehicleId:
+          type: string
+        deviceBatterySoc:
+          type: integer
+          multipleOf: 1
+          maximum: 100
+          minimum: 0
+          description: State of Charge of the battery of the device connected to this vehicle.
+        lastSeenOnlineTimestamp:
+          type: string
+          format: date-time
+          description: 'Timestamp of last communication to the backend. All the information on this response is, at the very least, updated on this point in time.'
+        gpsCoordinates:
+          type: object
+          required:
+            - latitude
+            - longitude
+            - altitude
+          properties:
+            latitude:
+              type: number
+              format: double
+            longitude:
+              type: number
+              format: double
+            altitude:
+              type: number
+              format: double
+        reservationStatus:
+          type: string
+          description: 'If this vehicle is part of a sharing fleet, whether it is reserved, available, or in the middle of a trip.'
+          enum:
+            - reserved
+            - available
+            - operated
+        batterySoc:
+          type: integer
+          minimum: 0
+          maximum: 100
+          multipleOf: 1
+          description: "State of Charge of the vehicle's main operation battery. "
+        vehicleOdometer:
+          type: number
+          format: double
+          description: The odometer of this vehicle.
+        deviceOdometer:
+          type: number
+          format: double
+          description: The odometer of the device connected to this vehicle.
+      required:
+        - vehicleId
+        - lastSeenOnlineTimestamp
+        - gpsCoordinates
+        - deviceBatterySoc
+    VehicleCommand:
+      title: VehicleCommand
+      type: object
+      description: A command sent to a vehicle.
+      x-tags:
+        - models
+      properties:
+        command:
+          type: string
+          description: The command itself. The generic ones are in the enum.
+          enum:
+            - power-on
+            - power-off
+            - open-topcase
+            - open-seat
+            - locate-lights
+            - locate-horn
+            - locate
+            - start-reservation
+            - end-reservation
+          pattern: '^[a-z-]+'
+        arguments:
+          type: string
+          description: 'Any extra arguments, if required. We can also put the arguments in extra JSON fields.'
+      required:
+        - command
   securitySchemes:
     Basic:
       type: http
@@ -162,6 +196,15 @@ components:
         Authorization: Bearer ${token}
         ```
         Take into account that the token obtained through the **Token URL** has a TTL, so be sure to ensure its renewal.
+  parameters:
+    vehicleId:
+      in: path
+      name: vehicleId
+      schema:
+        type: string
+        format: uuid
+      description: A UUID representing a particular vehicle.
+      required: true
 security:
   - Basic: []
   - OAuth2: []
