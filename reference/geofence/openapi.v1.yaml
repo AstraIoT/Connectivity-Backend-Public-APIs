@@ -8,8 +8,8 @@ info:
     This API is still in the design phase, so expect changes.
   contact:
     name: Software Team
-    url: www.astraiot.co.uk
-    email: api@astraiot.co.uk
+    url: https://www.astraiot.co.uk
+    email: miguel@astraiot.co.uk
 servers:
   - description: Production
     url: 'https://connectivity.astraiot.co.uk/api/geofence/v1/'

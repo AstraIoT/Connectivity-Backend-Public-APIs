@@ -7,8 +7,8 @@ info:
   version: '1.0'
   description: The Auth API provides authentication to all applying clients.
   contact:
-    name: Miguel Vera
-    email: miguel@astraiot.co.uk
+    name: Software team
+    email: software@astraiot.co.uk
 servers:
   - url: 'https://connectivity.astraiot.co.uk:443/api/auth/v1'
     description: Production

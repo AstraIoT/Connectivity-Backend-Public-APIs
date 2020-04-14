@@ -7,9 +7,9 @@ info:
   version: '1.0'
   description: The Astra API provides Astra-specific functions.
   contact:
-    name: Miguel Vera
-    email: miguel@astraiot.co.uk
-    url: 'https://www.linkedin.com/in/mikiloz'
+    name: Software team
+    email: software@astraiot.co.uk
+    url: 'https://www.astraiot.co.uk'
 servers:
   - url: 'https://connectivity.astraiot.co.uk:443/api/astra/v1'
     description: Production

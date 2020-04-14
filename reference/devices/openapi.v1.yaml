@@ -11,9 +11,9 @@ info:
   version: '1.0'
   description: The Devices API can be used to poll the status of devices and act on them.
   contact:
-    name: Miguel Vera
-    email: miguel@astraiot.co.uk
-    url: 'https://www.linkedin.com/in/mikiloz'
+    name: Software team
+    email: software@astraiot.co.uk
+    url: 'https://www.astraiot.co.uk'
 servers:
   - url: 'https://connectivity.astraiot.co.uk:443/api/devices/v1'
     description: Production
